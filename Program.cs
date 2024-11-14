@@ -1,6 +1,11 @@
+using Microsoft.EntityFrameworkCore;
+using Skal_vi_videre;
 using Skal_vi_videre.Components;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<DbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString(Secrets.ConnectionString)));
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
