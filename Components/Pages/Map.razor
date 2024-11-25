@@ -1,0 +1,18 @@
+﻿@inject IJSRuntime JSRuntime
+
+<div id="@MapContainerId" style="height: 400px; width: 100%;"></div>
+
+@code {
+    [Parameter] public double Latitude { get; set; }
+    [Parameter] public double Longitude { get; set; }
+    [Parameter] public string MapContainerId { get; set; } = "map";
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // This should invoke the initMap function defined in google-maps.js
+            await JSRuntime.InvokeVoidAsync("initMap", MapContainerId, Latitude, Longitude);
+        }
+    }
+}
