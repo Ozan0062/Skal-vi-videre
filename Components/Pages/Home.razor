@@ -1,4 +1,29 @@
 ﻿@page "/"
+@inject IJSRuntime JSRuntime
 
 <h3>Google Map Example</h3>
-<Map Latitude="37.7749" Longitude="-122.4194" MapContainerId="homeMap" />
+
+<button @onclick="LoadMap" class="btn btn-primary">Load Map</button>
+<div id="@MapContainerId" style="height: 400px; width: 100%;" hidden></div>
+
+@code {
+    [Parameter] public double Latitude { get; set; } = 37.7749; // Default latitude
+    [Parameter] public double Longitude { get; set; } = -122.4194; // Default longitude
+    [Parameter] public string MapContainerId { get; set; } = "homeMap";
+
+    private bool isMapLoaded = false;
+
+    private async Task LoadMap()
+    {
+        if (!isMapLoaded)
+        {
+            isMapLoaded = true;
+
+            // Remove the 'hidden' attribute from the map container
+            await JSRuntime.InvokeVoidAsync("eval", $"document.getElementById('{MapContainerId}').removeAttribute('hidden');");
+
+            // Call JavaScript function to initialize the map
+            await JSRuntime.InvokeVoidAsync("initMap", MapContainerId, Latitude, Longitude);
+        }
+    }
+}
