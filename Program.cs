@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Skal_vi_videre;
 using Skal_vi_videre.Components;
+using Skal_vi_videre.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,9 @@ builder.Services.AddDbContext<DbContext>(options =>
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+builder.Services.AddSingleton<CompanyRepository>();
+builder.Services.AddSingleton<EventRepository>();
 
 var app = builder.Build();
 

@@ -31,7 +31,7 @@
    "UseDateOnlyTimeOnly": false,
    "UseDbContextSplitting": false,
    "UseDecimalDataAnnotationForSprocResult": true,
-   "UseFluentApiOnly": true,
+   "UseFluentApiOnly": false,
    "UseHandleBars": false,
    "UseHierarchyId": false,
    "UseInflector": true,
