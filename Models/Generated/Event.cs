@@ -2,28 +2,44 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
-namespace Skal_vi_videre.Models;
+namespace Skal_vi_videre;
 
 public partial class Event
 {
+    [Key]
     public int Id { get; set; }
 
+    [Required]
+    [StringLength(1000)]
     public string Title { get; set; }
 
+    [StringLength(1000)]
     public string Description { get; set; }
 
+    [Required]
+    [StringLength(100)]
     public string Genre { get; set; }
 
+    [Column(TypeName = "datetime")]
     public DateTime StartDate { get; set; }
 
-    public DateTime EndDate { get; set; }
+    [Column(TypeName = "datetime")]
+    public DateTime? EndDate { get; set; }
 
+    [Required]
+    [StringLength(1000)]
     public string Location { get; set; }
 
-    public int CompanyId { get; set; }
+    public int? CompanyId { get; set; }
 
+    [InverseProperty("Event")]
     public virtual ICollection<Company> Companies { get; set; } = new List<Company>();
 
+    [ForeignKey("CompanyId")]
+    [InverseProperty("Events")]
     public virtual Company Company { get; set; }
 }
