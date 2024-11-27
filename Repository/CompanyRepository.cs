@@ -4,7 +4,7 @@ using Skal_vi_videre.Repository.Base;
 
 namespace Skal_vi_videre.Repository
 {
-    public class CompanyRepository : BaseRepository<Company>
+    public class CompanyRepository : BaseRepository<Company> //Det er en repository for Company
     {
         private PasswordHasher<string> _passwordHasher = new PasswordHasher<string>();
 
