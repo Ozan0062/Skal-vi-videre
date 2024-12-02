@@ -23,17 +23,13 @@ public partial class DBContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer(Secrets.ConnectionString);
+        => optionsBuilder.UseSqlServer("Data Source=mssql4.unoeuro.com;Initial Catalog=skalvividere_nu_db_svv_db;Persist Security Info=True;User ID=skalvividere_nu;Password=bpanGcHt4m6ygE52hRxB;Encrypt=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Company>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Companie__3214EC0767A69EF7");
-
-            entity.HasOne(d => d.Event).WithMany(p => p.Companies)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Companies__Event__3E52440B");
         });
 
         modelBuilder.Entity<Event>(entity =>

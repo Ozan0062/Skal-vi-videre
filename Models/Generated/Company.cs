@@ -20,7 +20,7 @@ public partial class Company
     public string Cvr { get; set; }
 
     [Required]
-    [StringLength(50)]
+    [StringLength(500)]
     public string Name { get; set; }
 
     [Required]
@@ -32,7 +32,7 @@ public partial class Company
     public string Email { get; set; }
 
     [Required]
-    [StringLength(50)]
+    [StringLength(500)]
     public string Password { get; set; }
 
     [Required]
@@ -46,12 +46,6 @@ public partial class Company
     [Required]
     [StringLength(1000)]
     public string Description { get; set; }
-
-    public int EventId { get; set; }
-
-    [ForeignKey("EventId")]
-    [InverseProperty("Companies")]
-    public virtual Event Event { get; set; }
 
     [InverseProperty("Company")]
     public virtual ICollection<Event> Events { get; set; } = new List<Event>();
