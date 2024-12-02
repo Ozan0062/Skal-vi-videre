@@ -6,20 +6,28 @@
 @using Microsoft.AspNetCore.Authentication.Cookies
 @inject IHttpContextAccessor HttpContextAccessor
 
+
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-        <a class="navbar-brand" href="/">
-            <img src="" alt="" />
+        <!-- Title with custom style -->
+        <a class="navbar-brand custom-title" href="/">
+            Skal vi videre?
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
+                <!-- Create Company Button -->
                 <li class="nav-item">
-                    <button class="btn btn-basic nav-link" @onclick="NavigateToLogInPage">
-                        <i class="fas fa-user-circle"></i>
-                        Min side
+                    <button class="btn btn-outline-primary me-2" @onclick="NavigateToCreatePage">
+                        Opret virksomhed
+                    </button>
+                </li>
+                <!-- Login Button -->
+                <li class="nav-item">
+                    <button class="btn btn-outline-primary" @onclick="NavigateToLogInPage">
+                        Login
                     </button>
                 </li>
                 @if (IsCompanyLoggedIn)
@@ -35,6 +43,7 @@
         </div>
     </div>
 </nav>
+
 
 <div class="container-fluid">
     <div class="row">
@@ -67,5 +76,10 @@
     private void LogOut()
     {
         NavigationManager.NavigateTo("/logout");
+    }
+
+    private void NavigateToCreatePage()
+    {
+        NavigationManager.NavigateTo("/Register");
     }
 }

@@ -19,6 +19,23 @@
         top: 0.5rem;
     }
 
+.custom-title {
+    font-size: 2.5rem; /* Size */
+    font-weight: bold;
+}
+
+/* Custom Button Style */
+.btn-outline-primary {
+    border: 3px solid #2b59a2; /* Thicker blue border */
+    color: black; /* Black text inside the button */
+    font-weight: bold; /* Bold text for emphasis */
+    padding: 0.5rem 1rem; /* Adjust padding if needed */
+}
+
+    .btn-outline-primary:hover {
+        background-color: #007bff; /* Blue background on hover */
+        color: white; /* White text on hover */
+    }
 
 /*.footer {
     display: block;
