@@ -30,10 +30,6 @@ public partial class DBContext : DbContext
         modelBuilder.Entity<Company>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Companie__3214EC0767A69EF7");
-
-            entity.HasOne(d => d.Event).WithMany(p => p.Companies)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Companies__Event__3E52440B");
         });
 
         modelBuilder.Entity<Event>(entity =>

@@ -36,9 +36,6 @@ public partial class Event
 
     public int? CompanyId { get; set; }
 
-    [InverseProperty("Event")]
-    public virtual ICollection<Company> Companies { get; set; } = new List<Company>();
-
     [ForeignKey("CompanyId")]
     [InverseProperty("Events")]
     public virtual Company Company { get; set; }

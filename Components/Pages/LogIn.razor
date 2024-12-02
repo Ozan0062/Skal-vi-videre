@@ -1,0 +1,129 @@
+﻿@page "/login"
+
+@using System.ComponentModel.DataAnnotations
+@using Skal_vi_videre.Repository
+@using System.Security.Claims;
+@using Microsoft.AspNetCore.Authentication.Cookies;
+@using Microsoft.AspNetCore.Authentication;
+@inject NavigationManager NavigationManager
+@inject IHttpContextAccessor HttpContextAccessor
+
+<PageTitle>Log ind</PageTitle>
+<h1 class="text-center my-4">Log ind</h1>
+
+<div class="d-flex justify-content-center align-items-center">
+    <div class="col-md-4">
+        <section>
+            @if (!string.IsNullOrEmpty(errorMessage))
+            {
+                <div class="alert alert-danger">
+                    @errorMessage
+                </div>
+            }
+            <EditForm Model="Input" OnValidSubmit="LoginCompany">
+                <DataAnnotationsValidator />
+                <ValidationSummary class="text-danger" role="alert" />
+                <hr />
+
+                <div class="form-floating mb-3">
+                    <InputText @bind-Value="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                    <label for="email" class="form-label">Email</label>
+                    <ValidationMessage For="() => Input.Email" class="text-danger" />
+                </div>
+
+                <div class="form-floating mb-3 position-relative">
+                    <InputText @bind-Value="Input.Password" class="form-control" type="@passwordInputType" autocomplete="current-password" aria-required="true" placeholder="password" />
+                    <label for="password" class="form-label">Adgangskode</label>
+                    <ValidationMessage For="() => Input.Password" class="text-danger" />
+
+                    <!-- Vis/skjul adgangskode ikon -->
+                    <span @onclick="TogglePasswordVisibility" class="position-absolute end-0 me-3" style="top: 50%; transform: translateY(-50%); cursor: pointer;">
+                        <i class="fas @(passwordInputType == "Password" ? "fa-eye" : "fa-eye-slash")"></i>
+                    </span>
+                </div>
+                <div class="checkbox mb-3">
+                    <label class="form-label">
+                        <InputCheckbox @bind-Value="Input.RememberMe" class="darker-border-checkbox form-check-input" />
+                        Husk mig
+                    </label>
+                </div>
+                <button type="submit" class="w-100 btn btn-lg btn-primary">Log ind</button>
+
+                <div class="mt-3">
+                    <p>
+                        <a href="ForgotPassword">Glemt Adgangskode</a>
+                    </p>
+                    <p>
+                        <a href="Register">Opret Bruger</a>
+                    </p>
+                </div>
+            </EditForm>
+        </section>
+    </div>
+</div>
+
+@code {
+    private CompanyRepository _companyRepository = new CompanyRepository();
+    private InputModel Input { get; set; } = new InputModel();
+    private string? errorMessage;
+    private string passwordInputType = "Password";
+    public static Company? LoggedInCompany { get; set; }
+    private string? ReturnUrl { get; set; }
+
+    private async Task LoginCompany()
+    {
+        LoggedInCompany = _companyRepository.VerifyCompany(Input.Email, Input.Password);
+
+        if (LoggedInCompany == null)
+        {
+            errorMessage = "Error: Invalid login attempt.";
+            return;
+        }
+
+        var httpContext = HttpContextAccessor.HttpContext;
+        var authProperties = new AuthenticationProperties
+            {
+                IsPersistent = Input.RememberMe,
+                ExpiresUtc = Input.RememberMe
+                   ? DateTimeOffset.UtcNow.AddDays(30)
+                   : DateTimeOffset.UtcNow.AddMinutes(30)
+            };
+        
+            httpContext?.SignInAsync(
+            CookieAuthenticationDefaults.AuthenticationScheme,
+            BuildClaimsPrincipal(LoggedInCompany), authProperties);
+
+        NavigationManager.NavigateTo("/");
+    }
+
+    private ClaimsPrincipal BuildClaimsPrincipal(Company company)
+    {
+        List<Claim> claims = new List<Claim> {
+          new Claim(ClaimTypes.Email, company.Email) };
+
+        ClaimsIdentity claimsIdentity = new ClaimsIdentity(
+            claims,
+            CookieAuthenticationDefaults.AuthenticationScheme);
+        return new ClaimsPrincipal(claimsIdentity);
+    }
+
+    private void TogglePasswordVisibility()
+    {
+        passwordInputType = passwordInputType == "Password" ? "text" : "Password";
+    }
+
+    private sealed class InputModel
+    {
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; } = "";
+
+        [Required]
+        [DataType(DataType.Password)]
+        [Display(Name = "Adgangskode")]
+        public string Password { get; set; } = "";
+
+        [Display(Name = "Remember me?")]
+        public bool RememberMe { get; set; }
+    }
+}

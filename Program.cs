@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Skal_vi_videre;
 using Skal_vi_videre.Components;
@@ -14,6 +16,21 @@ builder.Services.AddRazorComponents()
 
 builder.Services.AddSingleton<CompanyRepository>();
 builder.Services.AddSingleton<EventRepository>();
+builder.Services.AddScoped<PasswordHasher<Company>>();
+builder.Services.AddHttpContextAccessor();
+
+//// Add cookie-based Authentication
+builder.Services.Configure<CookiePolicyOptions>(options =>
+{
+    options.MinimumSameSitePolicy = SameSiteMode.None;
+});
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
+{
+    options.LoginPath = "/Login";
+    //options.LogoutPath = "/Logout";
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+});
 
 var app = builder.Build();
 
@@ -26,7 +43,6 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 
 app.UseAntiforgery();
 

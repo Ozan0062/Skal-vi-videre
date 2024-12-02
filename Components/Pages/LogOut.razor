@@ -1,0 +1,21 @@
+﻿@page "/logout"
+@inject NavigationManager NavigationManager
+@using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Authentication.Cookies
+@inject IHttpContextAccessor HttpContextAccessor
+
+<p>Du er logget ud.</p>
+
+@code {
+
+    protected override async Task OnInitializedAsync()
+    {
+        Skal_vi_videre.Components.Pages.LogIn.LoggedInCompany = null;
+
+        var httpContext = HttpContextAccessor.HttpContext;
+
+        httpContext?.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+        NavigationManager.NavigateTo("/");
+    }
+}
