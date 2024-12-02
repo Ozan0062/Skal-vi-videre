@@ -1,10 +1,60 @@
 ﻿@page "/"
 @inject IJSRuntime JSRuntime
+@inject NavigationManager NavigationManager
 
-<h3>Google Map Example</h3>
+
+<!-- UDKOMMENTERET INDTIL DET SKAL BRUGES SENERE
+    <h3>Google Map Example</h3>
 
 <button @onclick="LoadMap" class="btn btn-primary">Load Map</button>
-<div id="@MapContainerId" style="height: 400px; width: 100%;" hidden></div>
+<div id="@MapContainerId" style="height: 400px; width: 100%;" hidden></div> -->
+
+<div class="container mt-5">
+    <div class="row">
+        <!-- Left Section for Big Text and small text -->
+        <div class="col-lg-6 text-container">
+            <h1 class="big-text">
+                Opret din virksomhed nu og lad kunderne finde dig – nemt og hurtigt!
+            </h1>
+            <p class="small-text">
+                Gratis og nemt at betjene. Du laver et event, og kunderne kan se dit event på deres app på mobiltelefon.
+            </p>
+            <!-- Button Below the Text -->
+            <button class="btn btn-primary create-button" @onclick="NavigateToCreatePage">
+                Opret virksomhed
+            </button>
+        </div>
+        <!-- Right Section for Image -->
+        <div class="col-lg-6 text-center">
+            <!-- Placeholder for right-side content (e.g., image, graphic, etc.) -->
+            <img src="images/skal vi videre endelig logo.png" alt="skal vi videre logo" class="img-fluid">
+        </div>
+    </div>
+</div>
+
+<!-- Footer Section for Partner Images -->
+<footer class="footer">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-2">
+                <img src="images/logo_kbh.png" alt="Partner 1" class="partner-logo">
+            </div>
+            <div class="col-md-2">
+                <img src="images/detkgltea.png" alt="Partner 2" class="partner-logo">
+            </div>
+            <div class="col-md-2">
+                <img src="images/r2n uden baggrund.png" alt="Partner 3" class="partner-logo">
+            </div>
+            <div class="col-md-2">
+                <img src="images/nightpay.png" alt="Partner 4" class="partner-logo">
+            </div><div class="col-md-2">
+                <img src="images/dangleterre.png" alt="Partner 5" class="partner-logo">
+            </div>
+        </div>
+    </div>
+</footer>
+
+
 
 @code {
     [Parameter] public double Latitude { get; set; } = 55.630846563348534; // Default latitude
@@ -25,5 +75,10 @@
             // Call JavaScript function to initialize the map
             await JSRuntime.InvokeVoidAsync("initMap", MapContainerId, Latitude, Longitude);
         }
+    }
+
+    private void NavigateToCreatePage()
+    {
+        NavigationManager.NavigateTo("/Register");
     }
 }

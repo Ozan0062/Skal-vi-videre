@@ -1,0 +1,56 @@
+﻿/* Style for the big text */
+.big-text {
+    font-size: 2.6rem; /* Adjust as needed for responsiveness */
+    font-weight: bold; /* Bold text */
+    color: black; /* Text color */
+    line-height: 1.5; /* Improve readability */
+    margin-top: 2rem; /* Space above the text */
+}
+
+.text-container {
+    max-width: 500px; /* Adjust this width to make the text narrower */
+    
+}
+
+/* Smaller text styling */
+.small-text {
+    font-size: 1rem; /* Adjust the size to be smaller */
+    color: gray; /* Light gray color for subtlety */
+    line-height: 1.4; /* Adjust line height for readability */
+    margin-top: 1rem; /* Space above the text */
+}
+
+/* Style for the button */
+.create-button {
+    font-size: 1.2rem; /* Slightly larger text */
+    padding: 10px 20px; /* Increase padding for a larger button */
+    margin-top: 1.5rem; /* Add space above the button */
+    width: auto; /* Ensure button is sized appropriately */
+    display: inline-block; /* Ensure the button doesn’t span the entire width */
+    color: White;
+    background-color: #2b59a2;
+    margin-left: 6.0rem; /* TODO? Skal laves til auto så det passer i forhold til skærmens størrelse */
+}
+
+/* Footer Styles */
+.footer {
+    background-color: white;
+    padding: 10px 0; /* Top and bottom padding */
+    margin-top: 50px; /* Space between content and footer */
+}
+
+/* Partner Logos */
+.partner-logo {
+    width: 100%; /* Make the logo responsive */
+    height: auto; /* Maintain aspect ratio */
+    max-width: 150px; /* Set max width to avoid oversized logos */
+    margin: 0 auto; /* Center logos within the column */
+}
+
+/* Optional: Add space between logos */
+.footer .col-md-2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
