@@ -1,9 +1,71 @@
 ﻿@inherits LayoutComponentBase
 
-@Body
+@inject NavigationManager NavigationManager
+@using Skal_vi_videre.Repository
+@using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Authentication.Cookies
+@inject IHttpContextAccessor HttpContextAccessor
 
-<div id="blazor-error-ui" data-nosnippet>
-    An unhandled error has occurred.
-    <a href="." class="reload">Reload</a>
-    <span class="dismiss">🗙</span>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">
+            <img src="" alt="" />
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <button class="btn btn-basic nav-link" @onclick="NavigateToLogInPage">
+                        <i class="fas fa-user-circle"></i>
+                        Min side
+                    </button>
+                </li>
+                @if (IsCompanyLoggedIn)
+                {
+                    <li class="nav-item">
+                        <button class="btn btn-basic nav-link" @onclick="LogOut">
+                            <i class="fas fa-sign-out-alt"></i>
+                            Log ud
+                        </button>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            @Body
+        </div>
+    </div>
+
+    @* <footer class="footer">
+        <div class="container">
+            <p>Footer</p>
+        </div>
+    </footer> *@
 </div>
+
+<div id="blazor-error-ui">
+    An unhandled error has occurred.
+    <a href="" class="reload">Reload</a>
+    <a class="dismiss">🗙</a>
+</div>
+
+@code {
+    private bool IsCompanyLoggedIn => Skal_vi_videre.Components.Pages.LogIn.LoggedInCompany != null;
+
+    void NavigateToLogInPage()
+    {
+        NavigationManager.NavigateTo("/LogIn");
+    }
+
+    private void LogOut()
+    {
+        NavigationManager.NavigateTo("/logout");
+    }
+}
