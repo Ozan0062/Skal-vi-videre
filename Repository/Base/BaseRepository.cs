@@ -18,6 +18,7 @@ namespace Skal_vi_videre.Repository.Base
 
             return newItem.Id;
         }
+
         public List<T> GetAll()
         {
             List<T> list = new List<T>();
@@ -41,6 +42,7 @@ namespace Skal_vi_videre.Repository.Base
         protected DbContext CreateDbContext()
         {
             DbContext result = new DBContext();
+
             return result;
         }
 
@@ -53,17 +55,21 @@ namespace Skal_vi_videre.Repository.Base
         {
             using DbContext context = CreateDbContext();
             T? existing = context.Set<T>().Find(id);
+
             if (existing == null)
             {
                 return false;
             }
+
             existing.Update(t);
+
             return (context.SaveChanges() > 0);
         }
 
         public virtual bool Delete(int id)
         {
             using DbContext context = CreateDbContext();
+
             try
             {
                 T tToDelete = context.Set<T>().Find(id);
@@ -75,8 +81,6 @@ namespace Skal_vi_videre.Repository.Base
             {
                 throw new Exception("kunne ikke slette objektet" + ex.Message);
             }
-
-
         }
     }
 }

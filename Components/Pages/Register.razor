@@ -58,13 +58,14 @@
     private CompanyRepository _companyRepository = new CompanyRepository();
     private InputModel Input { get; set; } = new();
     private string passwordInputType = "Password";
-    private Company LoggedInCompany { get; set; }
+    private Company? LoggedInCompany { get; set; }
     private string? Message;
 
     private async Task RegisterCompany()
     {
         Console.WriteLine("RegisterCompany kaldt");
         bool isValid = await _companyRepository.ValidateCompanyAsync(Input.Cvr, Input.Name);
+
         if (isValid)
         {
             Console.WriteLine("Virksomheden er valideret og kan oprettes.");
@@ -83,6 +84,7 @@
             _companyRepository.Create(company);
             NavigationManager.NavigateTo("/");
         }
+
         else
         {
             Console.WriteLine("Validering fejlede. CVR-nummeret og virksomhedsnavnet matcher ikke.");
@@ -126,6 +128,4 @@
         [Display(Name = "Beskrivelse")]
         public string Description { get; set; } = string.Empty;
     }
-
-
 }

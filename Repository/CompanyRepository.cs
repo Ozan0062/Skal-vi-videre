@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Skal_vi_videre.Repository.Base;
-using System.Net.Http;
 using Newtonsoft.Json;
+using Skal_vi_videre.Repository.Base;
 
 namespace Skal_vi_videre.Repository
 {
@@ -19,6 +18,7 @@ namespace Skal_vi_videre.Repository
         public override int Create(Company company)
         {
             company.Password = _passwordHasher.HashPassword(company.Email, company.Password);
+
             return base.Create(company);
         }
 
@@ -82,6 +82,7 @@ namespace Skal_vi_videre.Repository
                 return false;
             }
         }
+
         // Data model til at matche CVR API-respons
         public class CvrApiResponse
         {

@@ -14,7 +14,7 @@
 
         var httpContext = HttpContextAccessor.HttpContext;
 
-        httpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        httpContext?.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
         NavigationManager.NavigateTo("/");
     }

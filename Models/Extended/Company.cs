@@ -1,5 +1,4 @@
 ﻿using Skal_vi_videre.Repository.Base;
-using System.Runtime.ConstrainedExecution;
 
 namespace Skal_vi_videre
 {
