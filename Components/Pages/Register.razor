@@ -1,0 +1,131 @@
+﻿@page "/Register"
+
+@using Skal_vi_videre.Repository
+@using System.ComponentModel.DataAnnotations
+@inject NavigationManager NavigationManager
+
+<PageTitle>Opret Virksomhed</PageTitle>
+<h1 class="text-center my-4">Opret Virksomhed</h1>
+
+<div class="d-flex justify-content-center align-items-center">
+    <div class="col-md-4">
+        <StatusMessage Message="@Message" />
+        <EditForm Model="Input" OnValidSubmit="RegisterCompany">
+            <DataAnnotationsValidator />
+            <hr />
+            <ValidationSummary class="text-danger" />
+            <div class="form-floating mb-3">
+                <InputText @bind-Value="Input.Cvr" class="form-control" />
+                <label for="name">CVR Nummer</label>
+            </div>
+            <div class="form-floating mb-3">
+                <InputText @bind-Value="Input.Name" class="form-control" />
+                <label for="name">Navn</label>
+            </div>
+            <div class="form-floating mb-3">
+                <InputText @bind-Value="Input.Address" class="form-control" />
+                <label for="name">Adresse</label>
+            </div>
+            <div class="form-floating mb-3">
+                <InputText @bind-Value="Input.Email" class="form-control" placeholder="name@example.com" />
+                <label for="email">Email</label>
+                <ValidationMessage For="() => Input.Email" />
+            </div>
+            <div class="form-floating mb-3">
+            <InputText @bind-Value="Input.Password" class="form-control" type="@passwordInputType" autocomplete="current-password" aria-required="true" placeholder="password" />
+            <label for="password" class="form-label">Adgangskode</label>
+
+            <!-- Vis/skjul adgangskode ikon -->
+            <span @onclick="TogglePasswordVisibility" class="position-absolute end-0 me-3" style="top: 50%; transform: translateY(-50%); cursor: pointer;">
+                <i class="fas @(passwordInputType == "Password" ? "fa-eye" : "fa-eye-slash")"></i>
+            </span>
+            </div>
+            <div class="form-floating mb-3">
+                <InputText @bind-Value="Input.PhoneNumber" class="form-control" />
+                <label for="name">Telefon Nummer</label>
+            </div>
+            <div class="form-floating mb-3">
+                <InputText @bind-Value="Input.Description" class="form-control" />
+                <label for="name">Beskrivelse</label>
+            </div>
+            <button type="submit" class="w-100 btn btn-lg btn-primary">Opret</button>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+
+    private CompanyRepository _companyRepository = new CompanyRepository();
+    private InputModel Input { get; set; } = new();
+    private string passwordInputType = "Password";
+    private Company LoggedInCompany { get; set; }
+    private string? Message;
+
+    private async Task RegisterCompany()
+    {
+        Console.WriteLine("RegisterCompany kaldt");
+        bool isValid = await _companyRepository.ValidateCompanyAsync(Input.Cvr, Input.Name);
+        if (isValid)
+        {
+            Console.WriteLine("Virksomheden er valideret og kan oprettes.");
+            // Logik til at gemme virksomheden
+            Company company = new Company
+                {
+                    Cvr = Input.Cvr,
+                    Name = Input.Name,
+                    Address = Input.Address,
+                    Email = Input.Email,
+                    Password = Input.Password,
+                    PhoneNumber = Input.PhoneNumber,
+                    Description = Input.Description,
+                    Role = "Company"
+                };
+            _companyRepository.Create(company);
+            NavigationManager.NavigateTo("/");
+        }
+        else
+        {
+            Console.WriteLine("Validering fejlede. CVR-nummeret og virksomhedsnavnet matcher ikke.");
+        }
+    }
+
+    private void TogglePasswordVisibility()
+    {
+        passwordInputType = passwordInputType == "Password" ? "text" : "Password";
+    }
+
+    private class InputModel
+    {
+        [Required]
+        [Display(Name = "CVR-nummer")]
+        public string Cvr { get; set; } = string.Empty;
+
+        [Required]
+        [Display(Name = "Navn")]
+        public string Name { get; set; } = string.Empty;
+
+        [Required]
+        [Display(Name = "Adresse")]
+        public string Address { get; set; } = string.Empty;
+
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; } = string.Empty;
+
+        [Required]
+        [DataType(DataType.Password)]
+        [Display(Name = "Adgangskode")]
+        public string Password { get; set; } = string.Empty;
+
+        [Required]
+        [DataType(DataType.PhoneNumber)]
+        [Display(Name = "Telefonnummer")]
+        public string PhoneNumber { get; set; } = string.Empty;
+
+        [Required]
+        [Display(Name = "Beskrivelse")]
+        public string Description { get; set; } = string.Empty;
+    }
+
+
+}
