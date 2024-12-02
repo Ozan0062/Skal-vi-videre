@@ -82,8 +82,6 @@ namespace Skal_vi_videre.Repository
                 return false;
             }
         }
-
-
         // Data model til at matche CVR API-respons
         public class CvrApiResponse
         {
