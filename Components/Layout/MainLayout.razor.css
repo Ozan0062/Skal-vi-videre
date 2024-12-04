@@ -38,8 +38,11 @@
         color: white; /* White text on hover */
     }
 
-/*.footer {
-    display: block;
-}*/
+.bordered-element {
+    border: 3px solid #2b59a2; /* Blue border */
+    border-radius: 8px; /* Optional: Rounded corners */
+    padding: 8px 16px; /* Optional: Add padding for better spacing */
+    display: inline-block; /* Ensure consistent button alignment */
+}
 
 
