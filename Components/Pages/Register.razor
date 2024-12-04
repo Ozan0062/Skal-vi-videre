@@ -65,6 +65,7 @@
 @code {
 
     private CompanyRepository _companyRepository = new CompanyRepository();
+    private Company _company = new Company();
     private InputModel Input { get; set; } = new();
     private string passwordInputType = "Password";
     private Company? LoggedInCompany { get; set; }
@@ -73,7 +74,7 @@
     private async Task RegisterCompany()
     {
         Console.WriteLine("RegisterCompany kaldt");
-        bool isValid = await _companyRepository.ValidateCompanyAsync(Input.Cvr, Input.Name);
+        bool isValid = await _company.ValidateCompanyAsync(Input.Cvr, Input.Name);
 
         if (isValid)
         {
