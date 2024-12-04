@@ -67,29 +67,6 @@
     </div>
 </div>
 
-
-<!-- Footer Section for Partner Images -->
-<footer class="footer">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-2">
-                <img src="images/logo_kbh.png" alt="Partner 1" class="partner-logo">
-            </div>
-            <div class="col-md-2">
-                <img src="images/detkgltea.png" alt="Partner 2" class="partner-logo">
-            </div>
-            <div class="col-md-2">
-                <img src="images/r2n uden baggrund.png" alt="Partner 3" class="partner-logo">
-            </div>
-            <div class="col-md-2">
-                <img src="images/nightpay.png" alt="Partner 4" class="partner-logo">
-            </div><div class="col-md-2">
-                <img src="images/dangleterre.png" alt="Partner 5" class="partner-logo">
-            </div>
-        </div>
-    </div>
-</footer>
-
 @code {
     private CompanyRepository _companyRepository = new CompanyRepository();
     private InputModel Input { get; set; } = new InputModel();
@@ -121,7 +98,7 @@
             CookieAuthenticationDefaults.AuthenticationScheme,
             BuildClaimsPrincipal(LoggedInCompany), authProperties);
 
-        NavigationManager.NavigateTo("/");
+        NavigationManager.NavigateTo("/CreateEvent");
     }
 
     private ClaimsPrincipal BuildClaimsPrincipal(Company company)

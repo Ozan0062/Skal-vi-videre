@@ -18,24 +18,41 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-                <!-- Create Company Button -->
-                <li class="nav-item">
-                    <button class="btn btn-outline-primary me-2" @onclick="NavigateToCreatePage">
-                        Opret virksomhed
-                    </button>
-                </li>
-                <!-- Login Button -->
-                <li class="nav-item">
-                    <button class="btn btn-outline-primary" @onclick="NavigateToLogInPage">
-                        Login
-                    </button>
-                </li>
                 @if (IsCompanyLoggedIn)
                 {
+                    <!-- Logged-in View -->
                     <li class="nav-item">
-                        <button class="btn btn-basic nav-link" @onclick="LogOut">
+                        <button class="btn btn-primary nav-link fw-bold bordered-element" @onclick="NavigateToEvents">
+                            <i class="fas fa-list"></i>
+                            Mine Events
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-primary nav-link fw-bold bordered-element" @onclick="NavigateToCreateEvent">
+                            <i class="fas fa-calendar-plus"></i>
+                            Opret Event
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-basic nav-link fw-bold bordered-element" @onclick="LogOut">
                             <i class="fas fa-sign-out-alt"></i>
                             Log ud
+                        </button>
+                    </li>
+                }
+                else
+                {
+                    <!-- Not Logged-in View -->
+                    <li class="nav-item">
+                        <button class="btn btn-outline-primary me-2" @onclick="NavigateToCreatePage">
+                            <i class="fa-plus-circle"></i>
+                            Opret virksomhed
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-outline-primary" @onclick="NavigateToLogInPage">
+                            <i class="fa-sign-in-alt"></i>
+                            Login
                         </button>
                     </li>
                 }
@@ -44,25 +61,40 @@
     </div>
 </nav>
 
-
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-lg-12">
-            @Body
+<div class="main-content">
+    <div class="content">
+        <!-- Main Content of the page -->
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    @Body
+                </div>
+            </div>
         </div>
     </div>
 
-    @* <footer class="footer">
+    <!-- Footer Section for Partner Images -->
+    <footer class="footer">
         <div class="container">
-            <p>Footer</p>
+            <div class="row justify-content-center">
+                <div class="col-md-2">
+                    <img src="images/logo_kbh.png" alt="Partner 1" class="partner-logo">
+                </div>
+                <div class="col-md-2">
+                    <img src="images/detkgltea.png" alt="Partner 2" class="partner-logo">
+                </div>
+                <div class="col-md-2">
+                    <img src="images/r2n uden baggrund.png" alt="Partner 3" class="partner-logo">
+                </div>
+                <div class="col-md-2">
+                    <img src="images/nightpay.png" alt="Partner 4" class="partner-logo">
+                </div>
+                <div class="col-md-2">
+                    <img src="images/dangleterre.png" alt="Partner 5" class="partner-logo">
+                </div>
+            </div>
         </div>
-    </footer> *@
-</div>
-
-<div id="blazor-error-ui">
-    An unhandled error has occurred.
-    <a href="" class="reload">Reload</a>
-    <a class="dismiss">🗙</a>
+    </footer>
 </div>
 
 @code {
@@ -81,5 +113,15 @@
     private void NavigateToCreatePage()
     {
         NavigationManager.NavigateTo("/Register");
+    }
+
+    private void NavigateToCreateEvent()
+    {
+        NavigationManager.NavigateTo("/CreateEvent");
+    }
+
+    private void NavigateToEvents()
+    {
+        NavigationManager.NavigateTo("/Events");
     }
 }
