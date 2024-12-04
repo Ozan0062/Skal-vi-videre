@@ -46,3 +46,50 @@
 }
 
 
+/* Footer Styles */
+.footer {
+    background-color: white;
+    padding: 10px 0; /* Top and bottom padding */
+    margin-top: 50px; /* Space between content and footer */
+}
+
+/* Partner Logos */
+.partner-logo {
+    width: 100%; /* Make the logo responsive */
+    height: auto; /* Maintain aspect ratio */
+    max-width: 150px; /* Set max width to avoid oversized logos */
+    margin: 0 auto; /* Center logos within the column */
+}
+
+/* Optional: Add space between logos */
+.footer .col-md-2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+
+/* Ensure the body takes full height */
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+/* Flexbox layout to push the footer to the bottom */
+.main-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Make sure the main container takes full height */
+}
+
+/* Allow the content to grow and push the footer to the bottom */
+.content {
+    flex-grow: 1;
+}
+
+/* Footer styling */
+.footer {
+    padding: 20px;
+    text-align: center;
+}
+
