@@ -97,7 +97,7 @@ namespace Skal_vi_videre
                 return string.Empty;
 
             // Fjern kendte suffixer som ApS, A/S, etc.
-            string[] suffixesToRemove = { "aps", "a/s", "ap", "i/s", "is", "pmv" };
+            string[] suffixesToRemove = { "aps", "a/s", "as", "i/s", "is", "pmv" };
 
             // Fjern suffixer fra navnet
             foreach (var suffix in suffixesToRemove)
