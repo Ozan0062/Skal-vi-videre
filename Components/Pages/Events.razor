@@ -2,6 +2,178 @@
 
 @using Skal_vi_videre.Repository
 @using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Components.QuickGrid
 @inject NavigationManager NavigationManager
 
 <PageTitle>Mine Events</PageTitle>
+
+@if (Event == null)
+{
+    <div class="text-center">
+        <p><em>Loading...</em></p>
+    </div>
+}
+else if (!Event.Any())
+{
+    <div class="alert alert-warning text-center">Der er ikke blevet fundet nogen Events.</div>
+}
+else
+{
+    <div class="table-responsive">
+        <QuickGrid Items="FilteredItems" Pagination="@pagination" class="table table-striped">
+            <PropertyColumn Property="c => c.Title" Title="Titel" Sortable="true" Class="Title">
+                <ColumnOptions>
+                    <div class="input-group mb-3">
+                        <input type="search" class="form-control" autofocus @bind="filteredText" @bind:event="oninput" placeholder="Titel..." />
+                    </div>
+                </ColumnOptions>
+            </PropertyColumn>
+            <PropertyColumn Property="c => c.Location" Title="Lokation" Sortable="true" Class="Location">
+                <ColumnOptions>
+                    <div class="input-group mb-3">
+                        <input type="search" class="form-control" autofocus @bind="filteredText" @bind:event="oninput" placeholder="Lokation..." />
+                    </div>
+                </ColumnOptions>
+            </PropertyColumn>
+            <PropertyColumn Property="c => c.StartDate" Title="Start Dato" Format="yyyy-MM-dd" Sortable="true" />
+            <PropertyColumn Property="c => c.EndDate" Title="Slut Dato" Format="yyyy-MM-dd" Sortable="true" />
+            <TemplateColumn Title="Action">
+                <div class="d-flex justify-content-center flex-wrap">
+                    <!-- Vis-knap -->
+                    <button type="button" class="btn btn-primary btn-sm flex-fill mx-1" style="width: 30px; height: 30px;" data-bs-toggle="modal" data-bs-target="#myModal" @onclick="() => SetSelectedEvent(context)">
+                        <i class="far fa-eye"></i>
+                    </button>
+                        <!-- Rediger-knap -->
+                        <button type="button" class="btn btn-success btn-sm flex-fill mx-1" style="width: 30px; height: 30px;" @onclick="() => NavigateToUpdate(context.Id)">
+                            <i class="fas fa-edit"></i>
+                        </button>
+
+                        <!-- Slet-knap -->
+                        <button type="button" class="btn btn-danger btn-sm flex-fill mx-1" style="width: 30px; height: 30px;" data-bs-toggle="modal" data-bs-target="#deleteModal" @onclick="() => SetDeleteEvent(context)">
+                            <i class="far fa-trash-alt"></i>
+                        </button>
+                </div>
+            </TemplateColumn>
+        </QuickGrid>
+    </div>
+
+    <!-- Modal til sletning -->
+    <div class="modal" id="deleteModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Slet Event</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-danger mt-3" role="alert">
+                        Er du sikker på du vil slette denne Event?
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" @onclick="() => DeleteEvent(EventToDelete)">Ja</button>
+                    <button type="button" class="btn btn-success" data-bs-dismiss="modal">Nej</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Se Events -->
+    <div class="modal" id="myModal">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Event Detaljer</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    @if (SelectedEvent != null)
+                    {
+                        <ul class="list-group">
+                            <li class="list-group-item"><strong>ID:</strong> @SelectedEvent.Id</li>
+                            <li class="list-group-item"><strong>Titel:</strong> @SelectedEvent.Title</li>
+                            <li class="list-group-item"><strong>Beskrivelse:</strong> @SelectedEvent.Description</li>
+                            <li class="list-group-item"><strong>Genre:</strong> @SelectedEvent.Genre</li>
+                            <li class="list-group-item"><strong>Start Dato:</strong> @SelectedEvent.StartDate</li>
+                            <li class="list-group-item"><strong>Slut Dato:</strong> @SelectedEvent.EndDate</li>
+                            <li class="list-group-item"><strong>Lokation:</strong> @SelectedEvent.Location</li>
+                            <li class="list-group-item"><strong>Virksomheds ID:</strong> @SelectedEvent.CompanyId</li>
+                            <li class="list-group-item"><strong>Virksomhedsnavn:</strong> @SelectedEvent.Company?.Name</li>
+                        </ul>
+                    }
+                    else
+                    {
+                        <p><em>Vælg en Event for at se detaljer.</em></p>
+                    }
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Luk</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <Paginator State="@pagination" />
+}
+
+@code {
+    string filteredText = string.Empty;
+    private PaginationState pagination = new PaginationState { ItemsPerPage = 6 };
+    private List<Event> Event;
+    private Event? SelectedEvent;
+    private Event? EventToDelete;
+    EventRepository _eventRepository = new EventRepository();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Event = _eventRepository.GetAll();
+
+        if (Skal_vi_videre.Components.Pages.LogIn.LoggedInCompany == null)
+        {
+            NavigationManager.NavigateTo("/Error");
+            return;
+        }
+        else if (Skal_vi_videre.Components.Pages.LogIn.LoggedInCompany.Role == "Company")
+        {
+            var companyEmail = Skal_vi_videre.Components.Pages.LogIn.LoggedInCompany.Email;
+            Event = Event.Where(t => t.Company != null && t.Company.Email == companyEmail).ToList();
+
+        } 
+    }
+
+    IQueryable<Event> FilteredItems
+    {
+        get
+        {
+            var result = Event.AsQueryable();
+            if (!string.IsNullOrEmpty(filteredText))
+            {
+                result = result.Where(c => c.Title.Contains(filteredText, StringComparison.CurrentCultureIgnoreCase)
+                                        || c.Location!.Contains(filteredText, StringComparison.CurrentCultureIgnoreCase));
+            }
+            return result;
+        }
+    }
+
+    private void SetSelectedEvent(Event events)
+    {
+        SelectedEvent = events;
+        Console.WriteLine($"Selected Event: {SelectedEvent?.Title}");
+    }
+
+    private void SetDeleteEvent(Event events)
+    {
+        EventToDelete = events;
+    }
+
+    private void DeleteEvent(Event events)
+    {
+        _eventRepository.Delete(events.Id);
+        Event = _eventRepository.GetAll();
+    }
+
+    private void NavigateToUpdate(int id)
+    {
+        NavigationManager.NavigateTo($"/UpdateEvents/{id}");
+    }
+}

@@ -7,6 +7,10 @@
 <PageTitle>Opret Event</PageTitle>
 
 <div class="row">
+    <EditForm Model="Input" OnValidSubmit="CreateEvents">
+        <DataAnnotationsValidator />
+        <hr />
+        <ValidationSummary class="text-danger" />
     <!-- Left side with form -->
     <div class="col-lg-6 d-flex flex-column">
         <!-- Title -->
@@ -15,13 +19,13 @@
             <label for="title">Titel</label>
         </div>
 
-       
+
         <div class="form-floating mb-3">
-            <InputTextArea @bind-Value="Input.EventDescription" class="form-control" style="border: 4px solid #2b59a2; border-radius: 8px; height: 80px;" />
+            <InputTextArea @bind-Value="Input.Description" class="form-control" style="border: 4px solid #2b59a2; border-radius: 8px; height: 80px;" />
             <label for="description">Beskrivelse</label>
         </div>
 
-        
+
         <div class="form-floating mb-3">
             <InputSelect @bind-Value="Input.Genre" class="form-control" style="border: 4px solid #2b59a2; border-radius: 8px; height: 80px;">
                 <option value="" disabled>Vælg genre</option>
@@ -33,19 +37,19 @@
             <label for="genre">Genre</label>
         </div>
 
-        
+
         <div class="form-floating mb-3">
             <InputDate @bind-Value="Input.StartDate" class="form-control" style="border: 4px solid #2b59a2; border-radius: 8px; height: 80px;" />
             <label for="startDate">Start dato</label>
         </div>
 
-        
+
         <div class="form-floating mb-3">
             <InputDate @bind-Value="Input.EndDate" class="form-control" style="border: 4px solid #2b59a2; border-radius: 8px; height: 80px;" />
             <label for="endDate">Slut dato</label>
         </div>
 
-        
+
         <div class="form-floating mb-3">
             <InputText @bind-Value="Input.Location" class="form-control" style="border: 4px solid #2b59a2; border-radius: 8px; height: 80px;" />
             <label for="location">Lokation</label>
@@ -59,12 +63,46 @@
             <!-- Google Maps script ind her -->
         </div>
     </div>
+    <button type="submit" class="btn btn-primary create-button">Opret Event</button>
+    </EditForm>
 </div>
 
 @code
 {
-    
-    private InputModel Input { get; set; } = new InputModel();
+    EventRepository _eventRepository = new EventRepository();
+    Event _event = new Event();
+    CompanyRepository _companyRepository = new CompanyRepository();
+    private InputModel Input { get; set; } = new InputModel(); 
+
+    private async Task CreateEvents()
+    {
+        Event events = new Event
+        {
+            Title = Input.Title,
+            Description = Input.Description,
+            Genre = Input.Genre,
+            StartDate = Input.StartDate,
+            EndDate = Input.EndDate,
+            Location = Input.Location,
+            CompanyId = Skal_vi_videre.Components.Pages.LogIn.LoggedInCompany.Id
+        };
+        _eventRepository.Create(events);
+        NavigationManager.NavigateTo("/Events");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Input.StartDate = DateTime.Now;
+        Input.EndDate = DateTime.Now;
+
+        // Check if the user is logged in
+        if (Skal_vi_videre.Components.Pages.LogIn.LoggedInCompany == null)
+        {
+            // Redirect to the login page if not logged in
+            NavigationManager.NavigateTo("/Error");
+            return;
+        }
+    }
 
     private class InputModel
     {
@@ -74,7 +112,7 @@
 
         [Required]
         [Display(Name = "Beskrivelse af event")]
-        public string EventDescription { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
 
         [Required]
         [Display(Name = "Genre")]
