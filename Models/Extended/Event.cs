@@ -30,11 +30,11 @@ namespace Skal_vi_videre
         {
             if (StartDate > EndDate)
             {
-                throw new ArgumentOutOfRangeException("Startdatoen er større end sluttdatoen");
+                throw new ArgumentOutOfRangeException("Startdatoen er senere end slutdatoen");
             }
             else if (StartDate < DateTime.Now || EndDate < DateTime.Now)
             {
-                throw new ArgumentOutOfRangeException("Startdatoen eller Slutdatoen er mindre end dagens dato");
+                throw new ArgumentOutOfRangeException("Startdatoen eller Slutdatoen er i fortiden");
             }
         }
 
