@@ -20,7 +20,7 @@ namespace Skal_vi_videre.Tests
                 Password = "12345678",
                 PhoneNumber = "23145345",
                 Description = "Unit Test",
-                Role = "Company"
+                Role = "CompanyTest"
             };
             _companyRepository.Create(company);
             Assert.AreEqual(company.Name, "123 Flyt Aps");
@@ -31,10 +31,10 @@ namespace Skal_vi_videre.Tests
                 Name = "kmg 32",
                 Address = "kmg 32",
                 Email = "kmg@gmail.com",
-                Password = "2345544",
+                Password = "12345678",
                 PhoneNumber = "23423333",
                 Description = "KMG 32 ApS",
-                Role = "Company"
+                Role = "CompanyTest"
             };
             _companyRepository.Create(companyWithoutAps);
             Assert.AreEqual(companyWithoutAps.Name, "kmg 32");
@@ -112,16 +112,10 @@ namespace Skal_vi_videre.Tests
         public static void ClassCleanup()
         {
             // Fjern den oprettede Company fra databasen efter testen
-            var companyToDelete = _companyRepository.GetAll().FirstOrDefault(c => c.Cvr == "36716967");
+            var companyToDelete = _companyRepository.GetAll().FirstOrDefault(r => r.Role == "CompanyTest");
             if (companyToDelete != null)
             {
                 _companyRepository.Delete(companyToDelete.Id);
-            }
-
-            var companyToDelete1 = _companyRepository.GetAll().FirstOrDefault(c => c.Cvr == "35480013");
-            if (companyToDelete1 != null)
-            {
-                _companyRepository.Delete(companyToDelete1.Id);
             }
         }
     }
