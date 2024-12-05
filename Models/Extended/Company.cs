@@ -29,11 +29,7 @@ namespace Skal_vi_videre
         {
             if (string.IsNullOrEmpty(Name) || string.IsNullOrEmpty(Address) || string.IsNullOrEmpty(Email) || string.IsNullOrEmpty(Password) || string.IsNullOrEmpty(Role) || string.IsNullOrEmpty(Description))
             {
-                throw new ArgumentNullException("Det er null");
-            }
-            if (Name.Length < 1 || Address.Length < 1 || Email.Length < 1 || Role.Length < 1 || Description.Length < 1)
-            {
-                throw new ArgumentException("Det er for kort");
+                throw new ArgumentNullException("Det er null eller tom");
             }
         }
 
