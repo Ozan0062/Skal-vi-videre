@@ -1,13 +1,5 @@
 ﻿@page "/"
-@inject IJSRuntime JSRuntime
 @inject NavigationManager NavigationManager
-
-
-<!-- UDKOMMENTERET INDTIL DET SKAL BRUGES SENERE
-    <h3>Google Map Example</h3>
-
-<button @onclick="LoadMap" class="btn btn-primary">Load Map</button>
-<div id="@MapContainerId" style="height: 400px; width: 100%;" hidden></div> -->
 
 <div class="container mt-5">
     <div class="row">
@@ -24,37 +16,15 @@
                 Opret virksomhed
             </button>
         </div>
-        <!-- Right Section for Image -->
-        <div class="col-lg-6 text-center">
-            <!-- Placeholder for right-side content (e.g., image, graphic, etc.) -->
-            <img src="images/skal vi videre endelig logo.png" alt="skal vi videre logo" class="img-fluid">
+
+        <!-- Image Section on the Right with margin -->
+        <div class="col-md-6 d-flex justify-content-center justify-content-md-end mt-4 mt-md-0">
+            <img src="images/skal vi videre endelig logo.png" alt="Image Description" class="img-fluid" style="max-width: 90%; height: auto;" />
         </div>
     </div>
 </div>
 
-
-
 @code {
-    [Parameter] public double Latitude { get; set; } = 55.630846563348534; // Default latitude
-    [Parameter] public double Longitude { get; set; } = 12.078656210578572; // Default longitude
-    [Parameter] public string MapContainerId { get; set; } = "homeMap";
-
-    private bool isMapLoaded = false;
-
-    private async Task LoadMap()
-    {
-        if (!isMapLoaded)
-        {
-            isMapLoaded = true;
-
-            // Remove the 'hidden' attribute from the map container
-            await JSRuntime.InvokeVoidAsync("eval", $"document.getElementById('{MapContainerId}').removeAttribute('hidden');");
-
-            // Call JavaScript function to initialize the map
-            await JSRuntime.InvokeVoidAsync("initMap", MapContainerId, Latitude, Longitude);
-        }
-    }
-
     private void NavigateToCreatePage()
     {
         NavigationManager.NavigateTo("/Register");

@@ -40,30 +40,30 @@ else
             <TemplateColumn Title="Action">
                 <div class="d-flex justify-content-center flex-wrap">
                     <!-- Vis-knap -->
-                    <button type="button" class="btn btn-primary btn-sm flex-fill mx-1" style="width: 30px; height: 30px;" data-bs-toggle="modal" data-bs-target="#myModal" @onclick="() => SetSelectedEvent(context)">
+                    <button type="button" class="btn btn-primary btn-sm flex-fill mx-1" data-bs-toggle="modal" data-bs-target="#myModal" @onclick="() => SetSelectedEvent(context)">
                         <i class="far fa-eye"></i>
                     </button>
-                        <!-- Rediger-knap -->
-                        <button type="button" class="btn btn-success btn-sm flex-fill mx-1" style="width: 30px; height: 30px;" @onclick="() => NavigateToUpdate(context.Id)">
-                            <i class="fas fa-edit"></i>
-                        </button>
+                    <!-- Rediger-knap -->
+                    <button type="button" class="btn btn-success btn-sm flex-fill mx-1" @onclick="() => NavigateToUpdate(context.Id)">
+                        <i class="fas fa-edit"></i>
+                    </button>
 
-                        <!-- Slet-knap -->
-                        <button type="button" class="btn btn-danger btn-sm flex-fill mx-1" style="width: 30px; height: 30px;" data-bs-toggle="modal" data-bs-target="#deleteModal" @onclick="() => SetDeleteEvent(context)">
-                            <i class="far fa-trash-alt"></i>
-                        </button>
+                    <!-- Slet-knap -->
+                    <button type="button" class="btn btn-danger btn-sm flex-fill mx-1" data-bs-toggle="modal" data-bs-target="#deleteModal" @onclick="() => SetDeleteEvent(context)">
+                        <i class="far fa-trash-alt"></i>
+                    </button>
                 </div>
             </TemplateColumn>
         </QuickGrid>
     </div>
 
     <!-- Modal til sletning -->
-    <div class="modal" id="deleteModal">
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Slet Event</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    <h5 class="modal-title" id="deleteModalLabel">Slet Event</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="alert alert-danger mt-3" role="alert">
@@ -72,19 +72,19 @@ else
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal" @onclick="() => DeleteEvent(EventToDelete)">Ja</button>
-                    <button type="button" class="btn btn-success" data-bs-dismiss="modal">Nej</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Nej</button>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Se Events -->
-    <div class="modal" id="myModal">
+    <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-fullscreen">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Event Detaljer</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    <h5 class="modal-title" id="myModalLabel">Event Detaljer</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     @if (SelectedEvent != null)
@@ -137,8 +137,7 @@ else
         {
             var companyEmail = Skal_vi_videre.Components.Pages.LogIn.LoggedInCompany.Email;
             Event = Event.Where(t => t.Company != null && t.Company.Email == companyEmail).ToList();
-
-        } 
+        }
     }
 
     IQueryable<Event> FilteredItems

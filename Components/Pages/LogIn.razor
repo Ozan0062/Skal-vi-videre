@@ -10,8 +10,8 @@
 
 <PageTitle>Log ind</PageTitle>
 
-<div class="d-flex justify-content-between align-items-center">
-    <div class="col-md-6">
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
+    <div class="col-md-5">
         <section>
             @if (!string.IsNullOrEmpty(errorMessage))
             {
@@ -62,9 +62,10 @@
     </div>
 
     <!-- Image Section on the Right with margin -->
-    <div class="col-md-6 text-center ms-4">
-        <img src="images/skal vi videre endelig logo.png" alt="Image Description" class="img-fluid" />
+    <div class="col-md-6 text-center ms-md-4 mt-4 mt-md-0">
+        <img src="images/skal vi videre endelig logo.png" alt="Image Description" class="img-fluid" style="max-width: 80%; height: auto;" />
     </div>
+
 </div>
 
 @code {
@@ -90,13 +91,13 @@
             {
                 IsPersistent = Input.RememberMe,
                 ExpiresUtc = Input.RememberMe
-                   ? DateTimeOffset.UtcNow.AddDays(30)
-                   : DateTimeOffset.UtcNow.AddMinutes(30)
+                       ? DateTimeOffset.UtcNow.AddDays(30)
+                       : DateTimeOffset.UtcNow.AddMinutes(30)
             };
-        
-            httpContext?.SignInAsync(
-            CookieAuthenticationDefaults.AuthenticationScheme,
-            BuildClaimsPrincipal(LoggedInCompany), authProperties);
+
+        httpContext?.SignInAsync(
+        CookieAuthenticationDefaults.AuthenticationScheme,
+        BuildClaimsPrincipal(LoggedInCompany), authProperties);
 
         NavigationManager.NavigateTo("/CreateEvent");
     }

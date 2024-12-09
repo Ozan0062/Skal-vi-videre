@@ -3,6 +3,7 @@
 @using Skal_vi_videre.Repository
 @using System.ComponentModel.DataAnnotations
 @inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
 
 <PageTitle>Opret Event</PageTitle>
 
@@ -11,61 +12,66 @@
         <DataAnnotationsValidator />
         <hr />
         <ValidationSummary class="text-danger" />
-        <!-- Left side with form -->
-        <div class="col-lg-6 d-flex flex-column">
-            <!-- Title -->
-            <div class="form-floating mb-3">
-                <InputText @bind-Value="Input.Title" class="form-control" style="border: 4px solid #2b59a2; border-radius: 8px; height: 80px;" />
-                <label for="title">Titel</label>
+        <!-- Main container with form and map side by side -->
+        <div class="d-flex">
+            <!-- Left side with form -->
+            <div class="col-lg-6 d-flex flex-column me-2">
+                <!-- Title -->
+                <div class="form-floating mb-3">
+                    <InputText @bind-Value="Input.Title" class="form-control" style="border: 4px solid #2b59a2; border-radius: 8px; height: 80px;" />
+                    <label for="title">Titel</label>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <InputTextArea @bind-Value="Input.Description" class="form-control" style="border: 4px solid #2b59a2; border-radius: 8px; height: 150px;" />
+                    <label for="description">Beskrivelse</label>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <InputSelect @bind-Value="Input.Genre" class="form-control" style="border: 4px solid #2b59a2; border-radius: 8px; height: 80px;">
+                        <option value="" disabled>Vælg genre</option>
+                        <option value="Music">Musik</option>
+                        <option value="Theater">Teater</option>
+                        <option value="Art">Kunst</option>
+                        <option value="Sports">Sport</option>
+                    </InputSelect>
+                    <label for="genre">Genre</label>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input type="datetime-local" @bind="Input.StartDate" class="form-control" style="border: 4px solid #2b59a2; border-radius: 8px; height: 80px;" />
+                    <label for="startDate">Start dato</label>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input type="datetime-local" @bind="Input.EndDate" class="form-control" style="border: 4px solid #2b59a2; border-radius: 8px; height: 80px;" />
+                    <label for="endDate">Slut dato</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <div class="input-group">
+                        <InputText @bind-Value="Input.Location"
+                                   class="form-control"
+                                   style="border: 4px solid #2b59a2; border-radius: 8px; height: 80px;" />
+                        <button class="btn" @onclick="OnUpdateMapClick" type="button">
+                            <i class="fa-solid fa-map"></i>
+                        </button>
+                    </div>
+                    <label for="location">Lokation</label>
+                </div>
+                <button type="submit" class="w-100 btn btn-lg btn-primary" style="background-color: #2b59a2;">Opret Event</button>
             </div>
 
-
-            <div class="form-floating mb-3">
-                <InputTextArea @bind-Value="Input.Description" class="form-control" style="border: 4px solid #2b59a2; border-radius: 8px; height: 80px;" />
-                <label for="description">Beskrivelse</label>
-            </div>
-
-
-            <div class="form-floating mb-3">
-                <InputSelect @bind-Value="Input.Genre" class="form-control" style="border: 4px solid #2b59a2; border-radius: 8px; height: 80px;">
-                    <option value="" disabled>Vælg genre</option>
-                    <option value="Music">Musik</option>
-                    <option value="Theater">Teater</option>
-                    <option value="Art">Kunst</option>
-                    <option value="Sports">Sport</option>
-                </InputSelect>
-                <label for="genre">Genre</label>
-            </div>
-
-
-            <div class="form-floating mb-3">
-                <input type="datetime-local" @bind="Input.StartDate" class="form-control" style="border: 4px solid #2b59a2; border-radius: 8px; height: 80px;" />
-                <label for="startDate">Start dato</label>
-            </div>
-
-
-            <div class="form-floating mb-3">
-                <input type="datetime-local" @bind="Input.EndDate" class="form-control" style="border: 4px solid #2b59a2; border-radius: 8px; height: 80px;" />
-                <label for="endDate">Slut dato</label>
-            </div>
-
-
-            <div class="form-floating mb-3">
-                <InputText @bind-Value="Input.Location" class="form-control" style="border: 4px solid #2b59a2; border-radius: 8px; height: 80px;" />
-                <label for="location">Lokation</label>
+            <!-- Right side with Google Map -->
+            <div class="col-lg-6">
+                <div id="map" style="height: 100%;">
+                    <h3>Google Maps</h3>
+                    <div id="@MapContainerId" style="height: 400px; width: 100%;" hidden></div>
+                </div>
             </div>
         </div>
-
-        <!-- Right side with Google Map -->
-        <div class="col-lg-6">
-            <!-- Placeholder for the Google Map -->
-            <div id="map" style="height: 100%; border: 4px solid #2b59a2; border-radius: 8px;">
-                <!-- Google Maps script ind her -->
-            </div>
-        </div>
-        <button type="submit" class="btn btn-primary create-button">Opret Event</button>
     </EditForm>
 </div>
+
 
 @code
 {
@@ -90,7 +96,7 @@
                 };
             events.Validate();
             _eventRepository.Create(events);
-        NavigationManager.NavigateTo("/Events");
+            NavigationManager.NavigateTo("/Events");
         }
         catch (Exception ex)
         {
@@ -139,5 +145,64 @@
         [Required]
         [Display(Name = "Lokation")]
         public string Location { get; set; } = string.Empty;
+    }
+
+    [Parameter] public double Latitude { get; set; } = 55.630846563348534;
+    [Parameter] public double Longitude { get; set; } = 12.078656210578572;
+    [Parameter] public string MapContainerId { get; set; } = "homeMap";
+
+    private bool isMapLoaded = false;
+
+    private async Task LoadMap()
+    {
+        if (!isMapLoaded)
+        {
+            isMapLoaded = true;
+        }
+
+        // Fjern 'hidden'-attributten
+        await JSRuntime.InvokeVoidAsync("eval", $"document.getElementById('{MapContainerId}').removeAttribute('hidden');");
+
+        // Initialiser kortet
+        await JSRuntime.InvokeVoidAsync("initMap", MapContainerId, Latitude, Longitude);
+    }
+
+    private async Task UpdateMapLocation(string address)
+    {
+        if (!string.IsNullOrWhiteSpace(address))
+        {
+            var newLocation = await JSRuntime.InvokeAsync<MapLocation>("updateMapLocation", address);
+
+            if (newLocation != null)
+            {
+                Latitude = newLocation.Lat;
+                Longitude = newLocation.Lng;
+
+                await LoadMap();
+            }
+        }
+    }
+
+    private async Task OnUpdateMapClick()
+    {
+        var address = Input.Location?.Trim();
+        if (!string.IsNullOrWhiteSpace(address))
+        {
+            await UpdateMapLocation(address);
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await LoadMap();
+        }
+    }
+
+    public class MapLocation
+    {
+        public double Lat { get; set; }
+        public double Lng { get; set; }
     }
 }

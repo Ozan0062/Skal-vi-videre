@@ -20,3 +20,15 @@
     align-items: center;
     padding: 10px;
 }
+
+.input-group {
+    position: relative;
+}
+
+    .input-group .btn {
+        position: absolute;
+        top: 50%;
+        right: 10px; /* Placer knappen 10px fra højre kant */
+        transform: translateY(-50%); /* Centrer knappen vertikalt */
+        z-index: 10; /* Sørg for, at knappen er ovenpå inputfeltet */
+    }
