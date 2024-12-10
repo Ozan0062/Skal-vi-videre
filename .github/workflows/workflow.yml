@@ -5,15 +5,15 @@ on:
     branches:
       - master
     paths-ignore:
-      - 'Program.cs'                # Ignorer ændringer i Program.cs
-      - 'Components/App.razor'       # Ignorer ændringer i App.razor
-      - 'Models/Generated/DBContext' # Ignorer ændringer i DBContext
+      - 'Program.cs/**'                # Ignorer ændringer i Program.cs
+      - 'Components/App.razor/**'       # Ignorer ændringer i App.razor
+      - 'Models/Generated/DBContext/**' # Ignorer ændringer i DBContext
 
   pull_request:
     paths-ignore:
-      - 'Program.cs'                # Ignorer ændringer i Program.cs
-      - 'Components/App.razor'       # Ignorer ændringer i App.razor
-      - 'Models/Generated/DBContext' # Ignorer ændringer i DBContext
+      - 'Program.cs/**'                # Ignorer ændringer i Program.cs
+      - 'Components/App.razor/**'       # Ignorer ændringer i App.razor
+      - 'Models/Generated/DBContext/**' # Ignorer ændringer i DBContext
 
 jobs:
   build:
