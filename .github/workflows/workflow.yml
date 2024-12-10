@@ -24,8 +24,9 @@ jobs:
    # Erstat Secrets.cs værdier med GitHub Secrets
     - name: Replace Secrets.cs with GitHub Secrets
       run: |
-       sed -i "s|public static string ConnectionString = \".*\";|public static string ConnectionString = \"${{ secrets.ConnectionString }}\";|" Secrets.cs
-       sed -i "s|public static string APIKey = \".*\";|public static string APIKey = \"${{ secrets.APIKey }}\";|" Secrets.cs
+       sed -i 's|public static string ConnectionString = ".*";|public static string ConnectionString = "${{ secrets.ConnectionString }}";|' Secrets.cs
+       sed -i 's|public static string APIKey = ".*";|public static string APIKey = "${{ secrets.APIKey }}";|' Secrets.cs
+
 
      
 
