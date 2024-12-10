@@ -2,11 +2,12 @@
 {
     public static class GithubSecrets
     {
-        // Hvis miljøvariablen "GITHUB_ACTIONS" er sat, så er vi i GitHub Actions, ellers er vi i Visual Studio.
+        // Hvis vi er i GitHub Actions (miljøvariablen GITHUB_ACTIONS er til stede),
+        // skal vi bruge tomme strenge, ellers bruger vi Secrets fra Visual Studio.
         public static string ConnectionString =
-            Environment.GetEnvironmentVariable("GITHUB_ACTIONS") == null ? Secrets.ConnectionString : "";
+            Environment.GetEnvironmentVariable("GITHUB_ACTIONS") != null ? "" : Secrets.ConnectionString;
 
         public static string APIKey =
-            Environment.GetEnvironmentVariable("GITHUB_ACTIONS") == null ? Secrets.APIKey : "";
+            Environment.GetEnvironmentVariable("GITHUB_ACTIONS") != null ? "" : Secrets.APIKey;
     }
 }
