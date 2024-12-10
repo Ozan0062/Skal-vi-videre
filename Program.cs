@@ -8,7 +8,7 @@ using Skal_vi_videre.Repository;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<DbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString(GithubSecrets.ConnectionString)));
+    options.UseSqlServer(builder.Configuration.GetConnectionString(Secrets.ConnectionString)));
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
