@@ -21,8 +21,8 @@ jobs:
         dotnet-version: 9.0
       
     # Build .NET applikation
-    - name: Build Project
-      run: dotnet publish -c Release -o publish_output
+    #- name: Build Project
+      #run: dotnet publish -c Release -o publish_output
 
   deploy:
     needs: build
