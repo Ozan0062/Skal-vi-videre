@@ -30,8 +30,8 @@ jobs:
 
     steps:
     # Upload filerne via SFTP til Simply
-    - name: SFTP Deploy
-      uses: appleboy/scp-action@v0.1.4
+    - name: FTP Deploy
+      uses: appleboy/ftp-action@v1.2.0
       with:
         host: nt8.unoeuro.com      # Angiv din serveradresse her
         username: ${{ secrets.FTP_USERNAME }}
