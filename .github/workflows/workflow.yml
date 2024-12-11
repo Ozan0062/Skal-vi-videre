@@ -36,5 +36,5 @@ jobs:
         server: nt8.unoeuro.com      # Angiv din serveradresse her
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
-        local-dir: obj/Release/net9.0/
+        local-dir: C:\Users\ohsab\Desktop\Datamatiker\Hovedopgave\Skal-vi-videre\obj\Release\net9.0/
         server-dir: public_html/    # Angiv den fjernserver mappe
