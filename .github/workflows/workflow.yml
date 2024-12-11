@@ -30,11 +30,11 @@ jobs:
 
     steps:
     # Upload filerne via SFTP til Simply
-    - name: FTP Deploy
-      uses: SamKirkland/FTP-Deploy-Action@4.0.0
+    - name: SFTP Deploy
+      uses: appleboy/scp-action@v0.1.4
       with:
-       ftp-server: nt8.unoeuro.com
-       ftp-username: ${{ secrets.FTP_USERNAME }}
-       ftp-password: ${{ secrets.FTP_PASSWORD }}
-       local-dir: C:\Users\ohsab\Desktop\Datamatiker\Hovedopgave\Skal-vi-videre\bin\Release\net9.0  # Angiv den lokale mappe, du vil uploade
-       remote-dir: public_html/    # Angiv den fjernserver mappe
+        host: nt8.unoeuro.com      # Angiv din serveradresse her
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        source: C:\Users\ohsab\Desktop\Datamatiker\Hovedopgave\Skal-vi-videre\bin\Release\net9.0  # Angiv den lokale mappe, du vil uploade
+        targer: public_html/    # Angiv den fjernserver mappe
