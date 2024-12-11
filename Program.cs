@@ -19,6 +19,10 @@ builder.Services.AddSingleton<EventRepository>();
 builder.Services.AddScoped<PasswordHasher<Company>>();
 builder.Services.AddHttpContextAccessor();
 
+builder.Services.AddControllers();
+
+builder.Services.AddSwaggerGen();
+
 //// Add cookie-based Authentication
 builder.Services.Configure<CookiePolicyOptions>(options =>
 {
@@ -32,7 +36,22 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
 });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin().
+        AllowAnyMethod(). //HTTP Metoder
+        AllowAnyHeader();
+    });
+});
+
 var app = builder.Build();
+
+app.UseSwagger();
+app.UseSwaggerUI();
+
+app.UseCors();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -45,6 +64,8 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAntiforgery();
+
+app.MapControllers();
 
 app.MapStaticAssets();
 app.MapRazorComponents<App>()
