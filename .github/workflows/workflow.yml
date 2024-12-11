@@ -21,7 +21,7 @@ jobs:
         dotnet-version: 9.0
         
     - name: Remove Program.cs
-      run: rm -f src/Program.cs # Ændr stien til, hvor Program.cs ligger
+      run: rm -f /Program.cs # Ændr stien til, hvor Program.cs ligger
       
     # Build .NET applikation
     - name: Build Project
