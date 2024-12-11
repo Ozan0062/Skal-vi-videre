@@ -21,8 +21,8 @@ jobs:
         dotnet-version: 9.0
       
     # Build .NET applikation
-    - name: Build Project
-      run: dotnet publish -c Release -o publish_output
+    #- name: Build Project
+      #run: dotnet publish -c Release -o publish_output
 
   deploy:
     needs: build
@@ -30,11 +30,11 @@ jobs:
 
     steps:
     # Upload filerne via SFTP til Simply
-    - name: SFTP Deploy
-      uses: appleboy/scp-action@v0.1.4
+    - name: FTP Deploy
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
       with:
-        host: nt8.unoeuro.com
+        server: nt8.unoeuro.com      # Angiv din serveradresse her
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
-        source: publish_output/
-        target: public_html
+        #source: C:\Users\ohsab\Desktop\Datamatiker\Hovedopgave\Skal-vi-videre\bin\Release\net9.0\  # Angiv den lokale mappe, du vil uploade
+        #targer: public_html/    # Angiv den fjernserver mappe
