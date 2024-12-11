@@ -33,8 +33,8 @@ jobs:
     - name: FTP Deploy
       uses: SamKirkland/FTP-Deploy-Action@4.0.0
       with:
-       host: nt8.unoeuro.com
-       username: ${{ secrets.FTP_USERNAME }}
-       password: ${{ secrets.FTP_PASSWORD }}
+       ftp-server: nt8.unoeuro.com
+       ftp-username: ${{ secrets.FTP_USERNAME }}
+       ftp-password: ${{ secrets.FTP_PASSWORD }}
        source: C:\Users\ohsab\Desktop\Datamatiker\Hovedopgave\Skal-vi-videre\bin\Release\net9.0  # Angiv den lokale mappe, du vil uploade
        target: public_html/    # Angiv den fjernserver mappe
