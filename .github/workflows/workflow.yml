@@ -36,5 +36,5 @@ jobs:
         server: nt8.unoeuro.com      # Angiv din serveradresse her
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
-        local-dir: /obj/publish/win-x86/
+        local-dir: /obj/publish/
         server-dir: public_html/    # Angiv den fjernserver mappe
