@@ -22,7 +22,7 @@ jobs:
 
     # Build .NET applikation
     - name: Build Project
-      run: dotnet publish -c Release -o publish_output
+      run: dotnet build --configuration Release /p:CompileRemove=Program.cs
 
   deploy:
     needs: build
