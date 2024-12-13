@@ -21,6 +21,7 @@ namespace Skal_vi_videre.Controller
         [HttpGet]
         public ActionResult<List<Event>> Get()
         {
+            // Hent alle events fra databasen uden at inkludere Company-data
             var events = _eventRepository.GetAll();
             var eventsList = events.Select(e => new Event
             {
