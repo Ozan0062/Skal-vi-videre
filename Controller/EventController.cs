@@ -17,25 +17,25 @@ namespace Skal_vi_videre.Controller
         }
 
         // GET: api/<ModelsController>
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [HttpGet]
-        public ActionResult<List<Event>> Get()
-        {
-            // Hent alle events fra databasen uden at inkludere Company-data
-            var events = _eventRepository.GetAll();
-            var eventsList = events.Select(e => new Event
-            {
-                Id = e.Id,
-                Title = e.Title,
-                Description = e.Description,
-                Genre = e.Genre,
-                StartDate = e.StartDate,
-                EndDate = e.EndDate,
-                Location = e.Location,
-                CompanyId = e.CompanyId
-            }).ToList();
+        //[ProducesResponseType(StatusCodes.Status200OK)]
+        //[HttpGet]
+        //public ActionResult<List<Event>> Get()
+        //{
+        //    // Hent alle events fra databasen uden at inkludere Company-data
+        //    var events = _eventRepository.GetAll();
+        //    var eventsList = events.Select(e => new Event
+        //    {
+        //        Id = e.Id,
+        //        Title = e.Title,
+        //        Description = e.Description,
+        //        Genre = e.Genre,
+        //        StartDate = e.StartDate,
+        //        EndDate = e.EndDate,
+        //        Location = e.Location,
+        //        CompanyId = e.CompanyId
+        //    }).ToList();
 
-            return Ok(eventsList);
-        }
+        //    return Ok(eventsList);
+        //}
     }
 }
