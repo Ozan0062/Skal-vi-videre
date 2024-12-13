@@ -1,40 +1,17 @@
-name: Build and Deploy to Simply
-
-on:
-  push:
-    branches:
-      - master
-
+on: push
+name: 🚀 Deploy website on push
 jobs:
-  build:
+  web-deploy:
+    name: 🎉 Deploy
     runs-on: ubuntu-latest
-
     steps:
-    # Tjek kildekoden ud
-    - name: Checkout Code
-      uses: actions/checkout@v3
-
-    # Installer .NET SDK
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: 9.0
-      
-    # Build .NET applikation
-    #- name: Build Project
-      #run: dotnet publish -c Release -o publish_output
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-    # Upload filerne via SFTP til Simply
-    - name: FTP Deploy
+    - name: 🚚 Get latest code
+      uses: actions/checkout@v4
+    
+    - name: 📂 Sync files
       uses: SamKirkland/FTP-Deploy-Action@v4.3.5
       with:
         server: nt8.unoeuro.com      # Angiv din serveradresse her
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
-        # source: C:\Users\ohsab\Desktop\Datamatiker\Hovedopgave\Skal-vi-videre\bin\Release\net9.0\  # Angiv den lokale mappe, du vil uploade
-        # target: public_html/    # Angiv den fjernserver mappe
+        server-dir: public_html/
