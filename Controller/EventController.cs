@@ -19,10 +19,17 @@ namespace Skal_vi_videre.Controller
         // GET: api/<ModelsController>
         [ProducesResponseType(StatusCodes.Status200OK)]
         [HttpGet]
-        public ActionResult<List<Event>> Get()
+        public ActionResult<List<Event>> Get([FromQuery] string location = null)
         {
             // Hent alle events fra databasen uden at inkludere Company-data
             var events = _eventRepository.GetAll();
+
+            // Hvis der er angivet en lokation, filtrer events på lokationen
+            if (!string.IsNullOrEmpty(location))
+            {
+                events = events.Where(e => e.Location.Contains(location, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+
             var eventsList = events.Select(e => new Event
             {
                 Id = e.Id,
