@@ -1,35 +1,21 @@
-name: Build project and deploy to Simply
+name: Deploy project to Simply
 
 on: [push]
 
 jobs:
-  build_and_deploy:
-    name: Build package and deploy to Simply
+  deploy_to_simply:
+    name: Deploy project to Simply
     runs-on: windows-latest
     steps:
-      # Tjek koden ud
+      # Tjek koden ud fra repository
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Opsæt .NET-miljø
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: '9.0.x' # Skift version efter dit projekt
+      # Debug step for at sikre stistruktur (kan fjernes efter test)
+      - name: List workspace files
+        run: dir ${{ github.workspace }}
 
-      # Byg og publicer projektet
-      - name: Build and publish
-        run: dotnet publish -c Release -o ${{ github.workspace }}\publish
-
-      # Validér at publish-mappen eksisterer
-      - name: Validate publish folder
-        run: |
-          if [ ! -d "\publish" ]; then
-            echo "Publish folder not found!"
-            exit 1
-          fi
-
-      # Deploy til Simply
+      # Deploy eksisterende filer
       - name: Deploy to Simply
         uses: rasmusbuchholdt/simply-web-deploy@2.1.0
         with:
