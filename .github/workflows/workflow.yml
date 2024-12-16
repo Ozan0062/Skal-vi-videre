@@ -1,17 +1,19 @@
-on: push
-name: 🚀 Deploy website on push
+name: Build project and deploy to Simply
+on: [push]
+
 jobs:
-  web-deploy:
-    name: 🎉 Deploy
-    runs-on: ubuntu-latest
+  build_and_deploy:
+    name: Build package and deploy to Simply
+    runs-on: windows-latest
     steps:
-    - name: 🚚 Get latest code
-      uses: actions/checkout@v4
-    
-    - name: 📂 Sync files
-      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-      with:
-        server: nt8.unoeuro.com      # Angiv din serveradresse her
-        username: ${{ secrets.FTP_USERNAME }}
-        password: ${{ secrets.FTP_PASSWORD }}
-        server-dir: public_html/
+      - uses: actions/checkout@v1
+
+      - name: Deploy to Simply
+        uses: rasmusbuchholdt/simply-web-deploy@2.1.0
+        with:
+          website-name: skalvividere.nu
+          server-computer-name: nt8.unoeuro.com
+          server-username: ${{ secrets.FTP_USERNAME }}
+          server-password: ${{ secrets.FTP_PASSWORD }}
+          #source-path: '\build\'
+          target-path: public_html/
