@@ -1,4 +1,5 @@
 name: Build project and deploy to Simply
+
 on: [push]
 
 jobs:
@@ -6,14 +7,35 @@ jobs:
     name: Build package and deploy to Simply
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v1
+      # Tjek koden ud
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
+      # Opsæt .NET-miljø
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '9.0.x' # Skift version efter dit projekt
+
+      # Byg og publicer projektet
+      - name: Build and publish
+        run: dotnet publish -c Release -o ${{ github.workspace }}\publish
+
+      # Validér at publish-mappen eksisterer
+      - name: Validate publish folder
+        run: |
+          if [ ! -d "\publish" ]; then
+            echo "Publish folder not found!"
+            exit 1
+          fi
+
+      # Deploy til Simply
       - name: Deploy to Simply
         uses: rasmusbuchholdt/simply-web-deploy@2.1.0
         with:
           website-name: skalvividere.nu
           server-computer-name: https://nt8.unoeuro.com:8172/MsDeploy.axd
-          server-username: ${{ secrets.FTP_USERNAME }}
-          server-password: ${{ secrets.FTP_PASSWORD }}
-          source-path: \publish\
+          server-username: ${{ secrets.WEBDEPLOY_USERNAME }}
+          server-password: ${{ secrets.WEBDEPLOY_PASSWORD }}
+          source-path: /publish
           target-path: /public_html/
