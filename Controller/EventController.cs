@@ -24,12 +24,21 @@ namespace Skal_vi_videre.Controller
             // Hent alle events fra databasen uden at inkludere Company-data
             var events = _eventRepository.GetAll();
 
+            // Filtrer events, så de kun vises hvis:
+            // - EndDate er i fremtiden (ikke startet endnu eller stadig igang)
+            // - Eller hvis EndDate er null, men StartDate er i fremtiden
+            events = events.Where(e =>
+                (e.EndDate != null && e.EndDate >= DateTime.Now) ||  // EndDate i fremtiden
+                (e.EndDate == null && e.StartDate > DateTime.Now)    // StartDate i fremtiden og EndDate mangler
+            ).ToList();
+
             // Hvis der er angivet en lokation, filtrer events på lokationen
             if (!string.IsNullOrEmpty(location))
             {
                 events = events.Where(e => e.Location.Contains(location, StringComparison.OrdinalIgnoreCase)).ToList();
             }
 
+            // Opret en liste af events med de nødvendige data
             var eventsList = events.Select(e => new Event
             {
                 Id = e.Id,
