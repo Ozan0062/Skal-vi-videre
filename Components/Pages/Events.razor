@@ -35,6 +35,13 @@ else
                     </div>
                 </ColumnOptions>
             </PropertyColumn>
+            <PropertyColumn Property="c => c.Genre" Title="Genre" Sortable="true" Class="Genre">
+                <ColumnOptions>
+                    <div class="input-group mb-3">
+                        <input type="search" class="form-control" autofocus @bind="filteredText" @bind:event="oninput" placeholder="Genre..." />
+                    </div>
+                </ColumnOptions>
+            </PropertyColumn>
             <PropertyColumn Property="c => c.StartDate" Title="Start Dato" Format="yyyy-MM-dd HH:mm" Sortable="true" />
             <PropertyColumn Property="c => c.EndDate" Title="Slut Dato" Format="yyyy-MM-dd HH:mm" Sortable="true" />
             <TemplateColumn Title="Action">
@@ -97,7 +104,6 @@ else
                             <li class="list-group-item"><strong>Start Dato:</strong> @SelectedEvent.StartDate</li>
                             <li class="list-group-item"><strong>Slut Dato:</strong> @SelectedEvent.EndDate</li>
                             <li class="list-group-item"><strong>Lokation:</strong> @SelectedEvent.Location</li>
-                            <li class="list-group-item"><strong>Virksomheds ID:</strong> @SelectedEvent.CompanyId</li>
                             <li class="list-group-item"><strong>Virksomhedsnavn:</strong> @SelectedEvent.Company?.Name</li>
                         </ul>
                     }
@@ -148,7 +154,9 @@ else
             if (!string.IsNullOrEmpty(filteredText))
             {
                 result = result.Where(c => c.Title.Contains(filteredText, StringComparison.CurrentCultureIgnoreCase)
-                                        || c.Location!.Contains(filteredText, StringComparison.CurrentCultureIgnoreCase));
+                        || c.Location!.Contains(filteredText, StringComparison.CurrentCultureIgnoreCase)
+                        || c.Genre.Contains(filteredText, StringComparison.CurrentCultureIgnoreCase));
+
             }
             return result;
         }
