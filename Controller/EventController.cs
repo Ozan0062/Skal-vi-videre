@@ -19,7 +19,7 @@ namespace Skal_vi_videre.Controller
         // GET: api/<ModelsController>
         [ProducesResponseType(StatusCodes.Status200OK)]
         [HttpGet]
-        public ActionResult<List<Event>> Get([FromQuery] string location = null)
+        public ActionResult<List<Event>> Get()
         {
             // Hent alle events fra databasen uden at inkludere Company-data
             var events = _eventRepository.GetAll();
@@ -31,12 +31,6 @@ namespace Skal_vi_videre.Controller
                 (e.EndDate != null && e.EndDate >= DateTime.Now) ||  // EndDate i fremtiden
                 (e.EndDate == null && e.StartDate > DateTime.Now)    // StartDate i fremtiden og EndDate mangler
             ).ToList();
-
-            // Hvis der er angivet en lokation, filtrer events på lokationen
-            if (!string.IsNullOrEmpty(location))
-            {
-                events = events.Where(e => e.Location.Contains(location, StringComparison.OrdinalIgnoreCase)).ToList();
-            }
 
             // Opret en liste af events med de nødvendige data
             var eventsList = events.Select(e => new Event
