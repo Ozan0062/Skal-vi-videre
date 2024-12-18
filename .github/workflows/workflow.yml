@@ -16,5 +16,5 @@ jobs:
           server-computer-name: https://nt8.unoeuro.com:8172/MsDeploy.axd
           server-username: ${{ secrets.FTP_USERNAME }}
           server-password: ${{ secrets.FTP_PASSWORD }}
-          source-path: \publish\
-          target-path: /public_html/
+          #source-path:
+          target-path: /public_html
