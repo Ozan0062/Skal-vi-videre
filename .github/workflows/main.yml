@@ -22,5 +22,6 @@ jobs:
     - name: App Pool
       shell: pwsh
       run: |
-         & "D:\a\_actions\rasmusbuchholdt\simply-web-deploy\2.1.0/Scripts/Set-ApplicationPool.ps1" StartAppPool https://nt8.unoeuro.com:8172/MsDeploy.axd
+         D:\a\_actions\rasmusbuchholdt\simply-web-deploy\2.1.0/Scripts/Set-ApplicationPool.ps1 StartAppPool *** https://nt8.unoeuro.com:8172/MsDeploy.axd *** ***
+
 
