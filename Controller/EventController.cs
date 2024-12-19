@@ -19,7 +19,7 @@ namespace Skal_vi_videre.Controller
         // GET: api/<ModelsController>
         [ProducesResponseType(StatusCodes.Status200OK)]
         [HttpGet]
-        public ActionResult<List<Event>> Get()
+        public ActionResult<List<Event>> Get() // Få alle events
         {
             // Hent alle events fra databasen uden at inkludere Company-data
             var events = _eventRepository.GetAll();
