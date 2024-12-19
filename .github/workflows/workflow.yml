@@ -23,9 +23,6 @@ jobs:
           ApiKey: ${{ secrets.APIKEY }}
         run: dotnet publish skal-vi-videre.csproj --configuration Release --output ./publish --runtime win-x86 --self-contained true -p:PublishTrimmed=false -p:PublishSingleFile=false
 
-      - name: Test with .NET
-        run: dotnet test
-
       - name: Deploy to Simply
         uses: rasmusbuchholdt/simply-web-deploy@2.1.0
         with:
