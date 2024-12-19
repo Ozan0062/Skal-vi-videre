@@ -12,7 +12,7 @@ jobs:
       env:
           ConnectionString: ${{ secrets.CONNECTIONSTRING }}
           ApiKey: ${{ secrets.APIKEY }}
-      run: dotnet build --configuration Release --no-restore
+      run: dotnet build --configuration Release
 
     - name: 📂 Sync files
       uses: SamKirkland/FTP-Deploy-Action@v4.3.5
