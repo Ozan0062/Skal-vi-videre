@@ -17,14 +17,3 @@ jobs:
           server-username: ${{ secrets.FTP_USERNAME }}
           server-password: ${{ secrets.FTP_PASSWORD }}
           source-path: /
-          #target-path: /public_html
-          
-      - name: Start App Pool
-        shell: pwsh
-        run:  >
-         D:\a\_actions\rasmusbuchholdt\simply-web-deploy\2.1.0/Scripts/Set-ApplicationPool.ps1
-         StartAppPool
-         skalvividere.nu
-         https://nt8.unoeuro.com:8172/MsDeploy.axd
-         ${{ secrets.FTP_PASSWORD }}
-         ${{ secrets.FTP_PASSWORD }}    
