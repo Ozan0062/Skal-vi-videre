@@ -1,4 +1,4 @@
-name: Build project and deploy to Simply
+name: Build, publish and deploy project to Simply
 
 on: [push]
 
@@ -9,6 +9,20 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 9.0
+          
+      - name: Install dependencies
+        run: dotnet restore
+
+      - name: Publish
+        run: dotnet publish skal-vi-videre/skal-vi-videre.csproj --configuration Release --framework netcoreapp9.0 --output ./publish --runtime win-x86 --self-contained true -p:PublishTrimmed=false -p:PublishSingleFile=false
+
+      - name: Test with .NET
+        run: dotnet test
+
       - name: Deploy to Simply
         uses: rasmusbuchholdt/simply-web-deploy@2.1.0
         with:
@@ -16,4 +30,4 @@ jobs:
           server-computer-name: https://nt8.unoeuro.com:8172/MsDeploy.axd
           server-username: ${{ secrets.FTP_USERNAME }}
           server-password: ${{ secrets.FTP_PASSWORD }}
-          source-path: /
+          #source-path: /
