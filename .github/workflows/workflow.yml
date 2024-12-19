@@ -18,6 +18,9 @@ jobs:
         run: dotnet restore
 
       - name: Publish
+        env:
+          ConnectionString: ${{ secrets.CONNECTIONSTRING }}
+          ApiKey: ${{ secrets.APIKEY }}
         run: dotnet publish skal-vi-videre.csproj --configuration Release --output ./publish --runtime win-x86 --self-contained true -p:PublishTrimmed=false -p:PublishSingleFile=false
 
       - name: Test with .NET
