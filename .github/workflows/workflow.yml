@@ -18,7 +18,7 @@ jobs:
         run: dotnet restore
 
       - name: Publish
-        run: dotnet publish skal-vi-videre.csproj --configuration Release --framework netcoreapp9.0 --output ./publish --runtime win-x86 --self-contained true -p:PublishTrimmed=false -p:PublishSingleFile=false
+        run: dotnet publish skal-vi-videre.csproj --configuration Release --output ./publish --runtime win-x86 --self-contained true -p:PublishTrimmed=false -p:PublishSingleFile=false
 
       - name: Test with .NET
         run: dotnet test
