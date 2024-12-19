@@ -15,3 +15,11 @@ jobs:
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
         server-dir: public_html/
+
+    - name: Setup Simply Web Deploy
+      uses: rasmusbuchholdt/simply-web-deploy@2.1.0
+      with: 
+          server-computer-name: https://nt8.unoeuro.com:8172/MsDeploy.axd
+         
+
+

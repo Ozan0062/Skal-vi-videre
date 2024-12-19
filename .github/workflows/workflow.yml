@@ -17,4 +17,3 @@ jobs:
           server-username: ${{ secrets.FTP_USERNAME }}
           server-password: ${{ secrets.FTP_PASSWORD }}
           source-path: /
-          #target-path: /public_html
