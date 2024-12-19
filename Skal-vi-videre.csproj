@@ -6,6 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>Skal_vi_videre</RootNamespace>
     <AssemblyName>$(AssemblyName.Replace(' ', '_'))</AssemblyName>
+    <UserSecretsId>de864ece-8aa5-43a2-b614-ab18d2fd9e66</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
