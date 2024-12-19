@@ -12,13 +12,13 @@ jobs:
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: 9.0
+          dotnet-version: 9.0.101
           
       - name: Install dependencies
         run: dotnet restore
 
       - name: Publish
-        run: dotnet publish skal-vi-videre.csproj --configuration Release --framework netcoreapp9.0 --output ./publish --runtime win-x86 --self-contained true -p:PublishTrimmed=false -p:PublishSingleFile=false
+        run: dotnet publish skal-vi-videre.csproj --configuration Release --framework netcoreapp9.0.101 --output ./publish --runtime win-x86 --self-contained true -p:PublishTrimmed=false -p:PublishSingleFile=false
 
       - name: Test with .NET
         run: dotnet test
