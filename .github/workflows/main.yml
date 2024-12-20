@@ -8,6 +8,9 @@ jobs:
     - name: 🚚 Get latest code
       uses: actions/checkout@v4
 
+    - name: Test
+      run: dotnet test --no-build
+
     - name: 📂 Sync files and publish
       uses: SamKirkland/FTP-Deploy-Action@v4.3.5
       with:
