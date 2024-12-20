@@ -25,8 +25,6 @@ namespace Skal_vi_videre.Controller
             var events = _eventRepository.GetAll();
 
             // Filtrer events, så de kun vises hvis:
-            // - EndDate er i fremtiden (ikke startet endnu eller stadig igang)
-            // - Eller hvis EndDate er null, men StartDate er i fremtiden
             events = events.Where(e =>
                 (e.EndDate != null && e.EndDate >= DateTime.Now) ||  // EndDate i fremtiden
                 (e.EndDate == null && e.StartDate > DateTime.Now)    // StartDate i fremtiden og EndDate mangler
