@@ -1,4 +1,4 @@
-name: Build, publish and deploy project to Simply
+name: Build, test, publish and deploy project to Simply
 
 on: [push]
 
@@ -17,8 +17,12 @@ jobs:
       - name: Install dependencies
         run: dotnet restore
 
+      - name: Test
+        run: dotnet test --no-build
+        
       - name: Publish
-        run: dotnet publish --output ./publish
+        run: dotnet publish --configuration --no-build --output ./publish
+    
       - name: Deploy to Simply
         uses: rasmusbuchholdt/simply-web-deploy@2.1.0
         with:
