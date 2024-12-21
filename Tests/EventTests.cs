@@ -15,11 +15,11 @@ namespace Skal_vi_videre.Tests
         {
             // Indlæs konfigurationen fra secrets.json
             var configuration = new ConfigurationBuilder()
-                .AddJsonFile("./Secrets.json", optional: true, reloadOnChange: true)
+                .AddJsonFile("Secrets.json", optional: true, reloadOnChange: true)
                 .Build(); // Bygger IConfiguration objektet
 
             // Hent forbindelsesstrengen fra secrets.json
-            var connectionString = configuration["ConnectionString"];
+            var connectionString = configuration.GetConnectionString("ConnectionString");
 
             // Opret DbContextOptions med forbindelsesstrengen
             var optionsBuilder = new DbContextOptionsBuilder<DBContext>();

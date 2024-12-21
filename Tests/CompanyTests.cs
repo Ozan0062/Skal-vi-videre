@@ -20,7 +20,7 @@ namespace Skal_vi_videre.Tests
                 .Build(); // Bygger IConfiguration objektet
 
             // Hent forbindelsesstrengen fra secrets.json
-            var connectionString = configuration["ConnectionString"];
+            var connectionString = configuration.GetConnectionString("ConnectionString");
 
             // Opret DbContextOptions med forbindelsesstrengen
             var optionsBuilder = new DbContextOptionsBuilder<DBContext>();
