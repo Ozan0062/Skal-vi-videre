@@ -24,7 +24,7 @@ jobs:
         run: dotnet build --configuration Release --no-restore
         
       - name: Publish
-        run: dotnet publish ./skal-vi-videre.csproj --configuration Release --framework netcoreapp9.0 --no-build --output ./publish --runtime win-x86 --self-contained true -p:PublishTrimmed=false -p:PublishSingleFile=false
+        run: dotnet publish ./skal-vi-videre.csproj --configuration Release --no-build --output ./publish --runtime win-x86 --self-contained true -p:PublishTrimmed=false -p:PublishSingleFile=false
     
       - name: Deploy to Simply
         uses: rasmusbuchholdt/simply-web-deploy@2.1.0
@@ -33,4 +33,3 @@ jobs:
           server-computer-name: https://nt8.unoeuro.com:8172/MsDeploy.axd
           server-username: ${{ secrets.FTP_USERNAME }}
           server-password: ${{ secrets.FTP_PASSWORD }}
-          
