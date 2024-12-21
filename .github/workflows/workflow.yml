@@ -3,13 +3,14 @@ name: Test, build, publish and deploy project to Simply
 on: [push]
 
 jobs:
-  test:
+  Test:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
       
       - name: Test
-        run: dotnet test skal-vi-videre.csproj --no-build --logger --results-directory TestResults
+        run: dotnet test skal-vi-videre.csproj --no-build --logger "trx;LogFileName=test_results.trx" --results-directory TestResults
+
       
   build_and_deploy:
     name: Build package and deploy to Simply
