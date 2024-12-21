@@ -3,11 +3,19 @@ name: Build, publish and deploy project to Simply
 on: [push]
 
 jobs:
+  test:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Test
+        run: dotnet test --no-build
+      
   build_and_deploy:
     name: Build package and deploy to Simply
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v4
@@ -22,9 +30,6 @@ jobs:
           ConnectionString: ${{ secrets.CONNECTIONSTRING }}
           ApiKey: ${{ secrets.APIKEY }}
         run: dotnet build --configuration Release --no-restore
-
-      - name: Test
-        run: dotnet test --no-build
         
       - name: Publish
         run: dotnet publish ./skal-vi-videre.csproj --configuration Release --output ./publish --runtime win-x86 --self-contained true -p:PublishTrimmed=false -p:PublishSingleFile=false
