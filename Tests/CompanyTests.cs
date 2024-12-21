@@ -8,30 +8,7 @@ namespace Skal_vi_videre.Tests
     [TestClass()]
     public class CompanyRepositoryTests
     {
-        private static CompanyRepository _companyRepository;
-        private static DBContext? _dbContext;
-
-        [ClassInitialize]
-        public static void ClassInitialize(TestContext testContext)
-        {
-            // Indlæs konfigurationen fra secrets.json
-            var configuration = new ConfigurationBuilder()
-                .AddJsonFile("Secrets.json", optional: true, reloadOnChange: true)
-                .Build(); // Bygger IConfiguration objektet
-
-            // Hent forbindelsesstrengen fra secrets.json
-            var connectionString = configuration["ConnectionString"];
-
-            // Opret DbContextOptions med forbindelsesstrengen
-            var optionsBuilder = new DbContextOptionsBuilder<DBContext>();
-            optionsBuilder.UseSqlServer(connectionString);
-
-            // Sæt DbContext på CompanyRepository
-            CompanyRepository.DbContext = _dbContext;
-
-            // Initialiser CompanyRepository
-            _companyRepository = new CompanyRepository();
-        }
+        private static CompanyRepository _companyRepository = new CompanyRepository();
 
         [TestMethod()]
         public void CreateTest()
