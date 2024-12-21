@@ -22,6 +22,9 @@ jobs:
           ConnectionString: ${{ secrets.CONNECTIONSTRING }}
           ApiKey: ${{ secrets.APIKEY }}
         run: dotnet build --configuration Release --no-restore
+
+      - name: Test
+        run: dotnet test --no-build
         
       - name: Publish
         run: dotnet publish ./skal-vi-videre.csproj --configuration Release --output ./publish --runtime win-x86 --self-contained true -p:PublishTrimmed=false -p:PublishSingleFile=false
