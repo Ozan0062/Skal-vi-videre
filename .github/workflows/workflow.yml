@@ -21,7 +21,7 @@ jobs:
         env:
           ConnectionString: ${{ secrets.CONNECTIONSTRING }}
           ApiKey: ${{ secrets.APIKEY }}
-        run: dotnet build --configuration --no-restore
+        run: dotnet build --configuration Release --no-restore
     
       - name: Test
         run: dotnet test --no-build
