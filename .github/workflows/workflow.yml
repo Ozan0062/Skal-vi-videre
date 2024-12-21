@@ -24,6 +24,8 @@ jobs:
         run: dotnet build --configuration Release --no-restore
 
       - name: Test
+        env:
+          ConnectionString: ${{ secrets.CONNECTIONSTRING }}
         run: dotnet test --no-build --configuration Release
         
       - name: Publish
