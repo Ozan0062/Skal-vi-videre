@@ -4,19 +4,25 @@ on: [push]
 
 jobs:
   build_and_deploy:
-    name: Build package and deploy to Simply
+    name: Build package, test it and deploy to Simply
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v1
 
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v4
-        #with:
-          #dotnet-version: 9.0.x
+        with:
+          dotnet-version: 9.0.x
           
       - name: Install dependencies
         run: dotnet restore
 
+      - name: Build
+        env:
+          ConnectionString: ${{ secrets.CONNECTIONSTRING }}
+          ApiKey: ${{ secrets.APIKEY }}
+        run: dotnet build --configuration --no-restore
+    
       - name: Test
         run: dotnet test --no-build
         
@@ -30,4 +36,3 @@ jobs:
           server-computer-name: https://nt8.unoeuro.com:8172/MsDeploy.axd
           server-username: ${{ secrets.FTP_USERNAME }}
           server-password: ${{ secrets.FTP_PASSWORD }}
-          #source-path: /
