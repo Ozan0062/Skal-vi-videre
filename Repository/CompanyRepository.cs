@@ -8,6 +8,7 @@ namespace Skal_vi_videre.Repository
     public class CompanyRepository : BaseRepository<Company>
     {
         private PasswordHasher<string> _passwordHasher = new PasswordHasher<string>();
+        public static DBContext? DbContext { get; set; }
 
         public override int Create(Company company)
         {
