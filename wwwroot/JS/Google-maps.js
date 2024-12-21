@@ -1,59 +1,61 @@
-﻿//// Define the initMap function globally so it's accessible from Blazor
-//window.initMap = (mapContainerId, lat, lng) => {
-//    const location = { lat: lat, lng: lng };
-//    const map = new google.maps.Map(document.getElementById(mapContainerId), {
-//        zoom: 8,
-//        center: location,
-//    });
-//    new google.maps.Marker({
-//        position: location,
-//        map: map,
-//    });
-//};
+﻿let map;
+let marker;// Global variable for the marker
+let geocoder;
 
-let map, geocoder, marker;
+// Initialiser kortet uden pin på brugerens geolocation
+function initMap(containerId, latitude, longitude) {
+    map = new google.maps.Map(document.getElementById(containerId), {
+        center: { lat: latitude, lng: longitude },
+        zoom: 13
+    });
 
-window.initMap = (mapContainerId, lat, lng) => {
-    const location = { lat: lat, lng: lng };
-    const mapContainer = document.getElementById(mapContainerId);
+    // Vi vil ikke placere en pin ved brugerens oprindelige geolocation
+    // Kun center kortet på brugerens oprindelige koordinater, uden at placere en pin
+    map.setCenter({ lat: latitude, lng: longitude });
+}
 
-    if (mapContainer) {
-        map = new google.maps.Map(mapContainer, {
-            zoom: 8,
-            center: location,
-        });
-
-        marker = new google.maps.Marker({
-            position: location,
-            map: map,
-        });
-
-        geocoder = new google.maps.Geocoder();
-
-        if (!geocoder) {
-            console.error("Geocoder initialization failed.");
-        }
-    } else {
-        console.error("Map container not found.");
-    }
-};
-
-window.updateMapLocation = (address) => {
+// Opdater kortets lokation, når en ny adresse er angivet
+function updateMapLocation(address) {
     const geocoder = new google.maps.Geocoder();
+    geocoder.geocode({ 'address': address }, function (results, status) {
+        if (status === 'OK') {
+            const location = results[0].geometry.location;
 
-    return new Promise((resolve, reject) => {
-        if (address) {
-            geocoder.geocode({ address: address }, (results, status) => {
-                if (status === "OK" && results.length > 0) {
-                    const location = results[0].geometry.location;
-                    resolve({ Lat: location.lat(), Lng: location.lng() });
-                } else {
-                    console.error("Geocode failed: " + status);
-                    resolve(null); // Return null, hvis der ikke findes et resultat
-                }
+            // Hvis en marker allerede eksisterer, fjern den
+            if (marker) {
+                marker.setMap(null);
+            }
+
+            // Placer en pin på den nye lokation
+            marker = new google.maps.Marker({
+                map: map,
+                position: location,
+                title: address
             });
+
+            // Opdater kortets center til den nye lokation
+            map.setCenter(location);
+            map.setZoom(15);  // Zoom ind lidt tættere
         } else {
-            resolve(null); // Return null, hvis adressen er tom
+            alert('Adresse kunne ikke findes: ' + status);
         }
     });
-};
+}
+
+// Funktion til at hente brugerens aktuelle geolocation
+function getUserLocation() {
+    return new Promise((resolve, reject) => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function (position) {
+                resolve({
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                });
+            }, function () {
+                reject('Geolocation failed');
+            });
+        } else {
+            reject('Geolocation is not supported by this browser.');
+        }
+    });
+}

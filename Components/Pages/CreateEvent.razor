@@ -149,23 +149,31 @@
         public string Location { get; set; } = string.Empty;
     }
 
-    [Parameter] public double Latitude { get; set; } = 55.630846563348534;
-    [Parameter] public double Longitude { get; set; } = 12.078656210578572;
+    [Parameter] public double Latitude { get; set; } = 55.630846563348534;  // Standardværdi
+    [Parameter] public double Longitude { get; set; } = 12.078656210578572;  // Standardværdi
     [Parameter] public string MapContainerId { get; set; } = "homeMap";
 
     private bool isMapLoaded = false;
 
     private async Task LoadMap()
     {
-        if (!isMapLoaded)
-        {
-            isMapLoaded = true;
-        }
-
         // Fjern 'hidden'-attributten
         await JSRuntime.InvokeVoidAsync("eval", $"document.getElementById('{MapContainerId}').removeAttribute('hidden');");
 
-        // Initialiser kortet
+        // Hvis Latitude og Longitude er standardværdier, betyder det, at vi skal bruge brugerens geolocation
+        if (Latitude == 55.630846563348534 && Longitude == 12.078656210578572)
+        {
+            var location = await JSRuntime.InvokeAsync<MapLocation>("getUserLocation");
+
+            // Hvis vi får geolocation, opdateres Latitude og Longitude
+            if (location != null)
+            {
+                Latitude = location.Lat;
+                Longitude = location.Lng;
+            }
+        }
+
+        // Initialiser kortet med de opdaterede koordinater
         await JSRuntime.InvokeVoidAsync("initMap", MapContainerId, Latitude, Longitude);
     }
 
@@ -173,13 +181,16 @@
     {
         if (!string.IsNullOrWhiteSpace(address))
         {
+            // Hent den nye lokation baseret på adressen
             var newLocation = await JSRuntime.InvokeAsync<MapLocation>("updateMapLocation", address);
 
             if (newLocation != null)
             {
+                // Opdater Latitude og Longitude med den nye lokation
                 Latitude = newLocation.Lat;
                 Longitude = newLocation.Lng;
 
+                // Genindlæs kortet med den nye lokation
                 await LoadMap();
             }
         }
