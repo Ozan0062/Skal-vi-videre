@@ -7,8 +7,18 @@ using Skal_vi_videre.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//builder.Services.AddDbContext<DbContext>(options =>
+//    options.UseSqlServer(builder.Configuration.GetConnectionString(Secrets.ConnectionString)));
+
+//load the json file.
+builder.Configuration.AddJsonFile("Secrets.json",
+        optional: true,
+        reloadOnChange: true);
+
+var connectionString = builder.Configuration["ConnectionString"];
+
 builder.Services.AddDbContext<DbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString(Secrets.ConnectionString)));
+    options.UseSqlServer(connectionString));
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
