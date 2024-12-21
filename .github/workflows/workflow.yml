@@ -1,4 +1,4 @@
-name: Build, test, publish and deploy project to Simply
+name: Build, publish and deploy project to Simply
 
 on: [push]
 
@@ -24,7 +24,7 @@ jobs:
         run: dotnet build --configuration Release --no-restore
         
       - name: Publish
-        run: dotnet publish --configuration --no-build --output ./publish
+        run: dotnet publish --configuration Release --no-build --output ./publish
     
       - name: Deploy to Simply
         uses: rasmusbuchholdt/simply-web-deploy@2.1.0
