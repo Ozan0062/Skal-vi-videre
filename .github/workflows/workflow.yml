@@ -33,3 +33,4 @@ jobs:
           server-computer-name: https://nt8.unoeuro.com:8172/MsDeploy.axd
           server-username: ${{ secrets.FTP_USERNAME }}
           server-password: ${{ secrets.FTP_PASSWORD }}
+          
