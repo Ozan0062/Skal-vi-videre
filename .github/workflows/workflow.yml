@@ -24,7 +24,7 @@ jobs:
         run: dotnet build --configuration Release --no-restore
         
       - name: Publish
-        run: dotnet publish ./skal-vi-videre.csproj --configuration Release --output ./publish --self-contained true -p:PublishTrimmed=false -p:PublishSingleFile=false
+        run: dotnet publish ./skal-vi-videre.csproj --configuration Release --output ./publish --runtime win-x86 --self-contained true -p:PublishTrimmed=false -p:PublishSingleFile=false
     
       - name: Deploy to Simply
         uses: rasmusbuchholdt/simply-web-deploy@2.1.0
