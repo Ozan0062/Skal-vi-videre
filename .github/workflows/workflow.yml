@@ -11,7 +11,12 @@ jobs:
       - name: Test
         run: dotnet test skal-vi-videre.csproj --no-build --logger "trx;LogFileName=test_results.trx" --results-directory TestResults
 
-      
+      - name: Upload test results as artifacts
+        uses: actions/upload-artifact@v2
+        with:
+         name: test-results
+         path: TestResults/test_results.trx
+
   build_and_deploy:
     name: Build package and deploy to Simply
     runs-on: windows-latest
