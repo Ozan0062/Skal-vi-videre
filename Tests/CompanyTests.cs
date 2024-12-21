@@ -1,12 +1,36 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Skal_vi_videre.Repository;
+using Microsoft.Extensions.Configuration;
 
 namespace Skal_vi_videre.Tests
 {
     [TestClass()]
     public class CompanyRepositoryTests
     {
-        private static CompanyRepository _companyRepository = new CompanyRepository();
+        private static CompanyRepository _companyRepository;
+        private static DBContext? _dbContext;
+
+        [ClassInitialize]
+        public static void ClassInitialize(TestContext testContext)
+        {
+            var configuration = new ConfigurationBuilder()
+                .AddJsonFile("Secrets.json",
+                optional: true,
+                reloadOnChange: true)
+                .Build();
+
+            var connectionString = configuration.GetConnectionString("DefaultConnection");
+
+            var optionsBuilder = new DbContextOptionsBuilder<DbContext>();
+            optionsBuilder.UseSqlServer(connectionString);
+
+            // Sæt DbContext på CompanyRepository
+            CompanyRepository.DbContext = _dbContext;
+
+            // Initialiser CompanyRepository
+            _companyRepository = new CompanyRepository();
+        }
 
         [TestMethod()]
         public void CreateTest()
@@ -111,11 +135,11 @@ namespace Skal_vi_videre.Tests
         [ClassCleanup]
         public static void ClassCleanup()
         {
-            // Fjern den oprettede Company fra databasen efter testen
-            var companyToDelete = _companyRepository.GetAll().FirstOrDefault(r => r.Role == "CompanyTest");
-            if (companyToDelete != null)
+            // Fjern alle oprettede Company-objekter med rollen "CompanyTest"
+            var companiesToDelete = _companyRepository.GetAll().Where(r => r.Role == "CompanyTest").ToList();
+            foreach (var company in companiesToDelete)
             {
-                _companyRepository.Delete(companyToDelete.Id);
+                _companyRepository.Delete(company.Id);
             }
         }
     }

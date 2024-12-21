@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Skal_vi_videre.Repository;
 
 namespace Skal_vi_videre.Tests
@@ -7,6 +8,28 @@ namespace Skal_vi_videre.Tests
     public class EventTests
     {
         private static EventRepository _eventRepository = new EventRepository();
+        private static DBContext? _dbContext;
+
+        [ClassInitialize]
+        public static void ClassInitialize(TestContext testContext)
+        {
+            var configuration = new ConfigurationBuilder()
+                .AddJsonFile("Secrets.json",
+                optional: true,
+                reloadOnChange: true)
+                .Build();
+
+            var connectionString = configuration.GetConnectionString("DefaultConnection");
+
+            var optionsBuilder = new DbContextOptionsBuilder<DbContext>();
+            optionsBuilder.UseSqlServer(connectionString);
+
+            // Sæt DbContext på CompanyRepository
+            EventRepository.DbContext = _dbContext;
+
+            // Initialiser CompanyRepository
+            _eventRepository = new EventRepository();
+        }
 
         [TestMethod()]
         public void CreateTest()
@@ -68,11 +91,11 @@ namespace Skal_vi_videre.Tests
         [ClassCleanup]
         public static void ClassCleanup()
         {
-            // Fjern den oprettede Company fra databasen efter testen
-            var eventToDelete = _eventRepository.GetAll().FirstOrDefault(l => l.Location == "Test");
-            if (eventToDelete != null)
+            // Fjern den oprettede Event fra databasen efter testen
+            var eventsToDelete = _eventRepository.GetAll().Where(l => l.Location == "Test").ToList();
+            foreach (var events in eventsToDelete)
             {
-                _eventRepository.Delete(eventToDelete.Id);
+                _eventRepository.Delete(events.Id);
             }
         }
     }
