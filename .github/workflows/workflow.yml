@@ -4,7 +4,7 @@ on: [push]
 
 jobs:
   build_and_deploy:
-    name: Build package, test it and deploy to Simply
+    name: Build package, test it, publish it and deploy to Simply
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v1
