@@ -7,7 +7,7 @@ jobs:
     name: Build package and deploy to Simply
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
 
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v4
@@ -24,7 +24,7 @@ jobs:
         run: dotnet build --configuration Release --no-restore
         
       - name: Publish
-        run: dotnet publish skal-vi-videre.csproj --configuration Release --no-build --output ./publish --self-contained true -p:PublishTrimmed=false -p:PublishSingleFile=false
+        run: dotnet publish ./skal-vi-videre.csproj --configuration Release --framework netcoreapp9.0 --no-build --output ./publish --runtime win-x86 --self-contained true -p:PublishTrimmed=false -p:PublishSingleFile=false
     
       - name: Deploy to Simply
         uses: rasmusbuchholdt/simply-web-deploy@2.1.0
