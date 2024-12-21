@@ -8,34 +8,12 @@ namespace Skal_vi_videre.Tests
     [TestClass()]
     public class CompanyRepositoryTests
     {
-        private static CompanyRepository _companyRepository = new CompanyRepository();
-        private static DBContext _dbContext;
-
-        [ClassInitialize]
-        public static void ClassInitialize(TestContext testContext)
-        {
-            // Indlæs konfigurationen fra secrets.json
-            var configuration = new ConfigurationBuilder()
-                .AddJsonFile("Secrets.json", optional: true, reloadOnChange: true)
-                .Build(); // Bygger IConfiguration objektet
-
-            // Hent forbindelsesstrengen fra secrets.json
-            var connectionString = configuration.GetConnectionString("ConnectionString");
-
-            // Opret DbContextOptions med forbindelsesstrengen
-            var optionsBuilder = new DbContextOptionsBuilder<DBContext>();
-            optionsBuilder.UseSqlServer(connectionString);
-
-            _dbContext = new DBContext(optionsBuilder.Options);
-
-            // Initialiser CompanyRepository
-            _companyRepository = new CompanyRepository();
-            CompanyRepository.DbContext = _dbContext; // Assuming static DbContext property
-        }
+        private static CompanyRepository _companyRepository;
 
         [TestMethod()]
         public void CreateTest()
         {
+            CompanyRepository companyRepository = new CompanyRepository();
             Company company = new Company
             {
                 Cvr = "36716967",
@@ -47,7 +25,7 @@ namespace Skal_vi_videre.Tests
                 Description = "Unit Test",
                 Role = "CompanyTest"
             };
-            _companyRepository.Create(company);
+            companyRepository.Create(company);
             Assert.AreEqual(company.Name, "123 Flyt Aps");
 
             Company companyWithoutAps = new Company
@@ -61,7 +39,7 @@ namespace Skal_vi_videre.Tests
                 Description = "KMG 32 ApS",
                 Role = "CompanyTest"
             };
-            _companyRepository.Create(companyWithoutAps);
+            companyRepository.Create(companyWithoutAps);
             Assert.AreEqual(companyWithoutAps.Name, "kmg 32");
 
             Company nullCompany = new Company
@@ -75,7 +53,7 @@ namespace Skal_vi_videre.Tests
                 Description = "",
                 Role = ""
             };
-            Assert.ThrowsException<ArgumentNullException>(() => _companyRepository.Create(nullCompany));
+            Assert.ThrowsException<ArgumentNullException>(() => companyRepository.Create(nullCompany));
         }
 
         [TestMethod()]
@@ -136,11 +114,12 @@ namespace Skal_vi_videre.Tests
         [ClassCleanup]
         public static void ClassCleanup()
         {
+            CompanyRepository companyRepository = new CompanyRepository();
             // Fjern alle oprettede Company-objekter med rollen "CompanyTest"
-            var companiesToDelete = _companyRepository.GetAll().Where(r => r.Role == "CompanyTest").ToList();
+            var companiesToDelete = companyRepository.GetAll().Where(r => r.Role == "CompanyTest").ToList();
             foreach (var company in companiesToDelete)
             {
-                _companyRepository.Delete(company.Id);
+                companyRepository.Delete(company.Id);
             }
         }
     }
