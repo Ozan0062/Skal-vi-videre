@@ -15,7 +15,7 @@ namespace Skal_vi_videre.Tests
         {
             // Indlæs konfigurationen fra secrets.json
             var configuration = new ConfigurationBuilder()
-                .AddJsonFile("Secrets.json", optional: true, reloadOnChange: true)
+                .AddJsonFile("./Secrets.json", optional: true, reloadOnChange: true)
                 .Build(); // Bygger IConfiguration objektet
 
             // Hent forbindelsesstrengen fra secrets.json
