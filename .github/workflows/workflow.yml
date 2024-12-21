@@ -26,6 +26,7 @@ jobs:
       - name: Test
         env:
           ConnectionString: ${{ secrets.CONNECTIONSTRING }}
+          ApiKey: ${{ secrets.APIKEY }}
         run: dotnet test --no-build --configuration Release
         
       - name: Publish
