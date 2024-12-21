@@ -57,8 +57,8 @@ namespace Skal_vi_videre.Tests
                 Title = "Test",
                 Description = "Test",
                 Genre = "Test",
-                StartDate = new System.DateTime(2025, 11, 12, 15, 00, 00),
-                EndDate = new System.DateTime(2025, 12, 15, 15, 00, 00),
+                StartDate = new System.DateTime(2024, 11, 12, 15, 00, 00),
+                EndDate = new System.DateTime(2024, 12, 15, 15, 00, 00),
                 Location = "Test",
                 CompanyId = 4
             };

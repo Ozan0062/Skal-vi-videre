@@ -30,7 +30,7 @@ namespace Skal_vi_videre.Tests
                 Cvr = "35480013",
                 Name = "kmg 32",
                 Address = "kmg 32",
-                Email = "kmg@gmail.com",
+                Email = "kmg32@gmail.com",
                 Password = "12345678",
                 PhoneNumber = "23423333",
                 Description = "KMG 32 ApS",
