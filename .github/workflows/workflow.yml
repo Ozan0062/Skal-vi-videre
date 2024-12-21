@@ -22,9 +22,9 @@ jobs:
           ConnectionString: ${{ secrets.CONNECTIONSTRING }}
           ApiKey: ${{ secrets.APIKEY }}
         run: dotnet build --configuration Release --no-restore
-    
+
       - name: Test
-        run: dotnet test --no-build
+        run: dotnet test --no-build --configuration Release
         
       - name: Publish
         run: dotnet publish --configuration --no-build --output ./publish
