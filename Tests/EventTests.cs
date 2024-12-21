@@ -13,15 +13,16 @@ namespace Skal_vi_videre.Tests
         [ClassInitialize]
         public static void ClassInitialize(TestContext testContext)
         {
+            // Indlæs konfigurationen fra secrets.json
             var configuration = new ConfigurationBuilder()
-                .AddJsonFile("Secrets.json",
-                optional: true,
-                reloadOnChange: true)
-                .Build();
+                .AddJsonFile("Secrets.json", optional: true, reloadOnChange: true)
+                .Build(); // Bygger IConfiguration objektet
 
-            var connectionString = configuration.GetConnectionString("ConnectionString");
+            // Hent forbindelsesstrengen fra secrets.json
+            var connectionString = configuration["ConnectionString"];
 
-            var optionsBuilder = new DbContextOptionsBuilder<DbContext>();
+            // Opret DbContextOptions med forbindelsesstrengen
+            var optionsBuilder = new DbContextOptionsBuilder<DBContext>();
             optionsBuilder.UseSqlServer(connectionString);
 
             // Sæt DbContext på CompanyRepository
