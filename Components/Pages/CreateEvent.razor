@@ -18,17 +18,17 @@
             <div class="col-lg-6 d-flex flex-column me-2">
                 <!-- Title -->
                 <div class="form-floating mb-3">
-                    <InputText @bind-Value="Input.Title" class="form-control" style="border: 4px solid #2b59a2; border-radius: 8px; height: 80px;" />
+                    <InputText @bind-Value="Input.Title" id="title" class="form-control" style="border: 4px solid #2b59a2; border-radius: 8px; height: 80px;" />
                     <label for="title">Titel</label>
                 </div>
 
                 <div class="form-floating mb-3">
-                    <InputTextArea @bind-Value="Input.Description" class="form-control" style="border: 4px solid #2b59a2; border-radius: 8px; height: 150px;" />
+                    <InputTextArea @bind-Value="Input.Description" id="description" class="form-control" style="border: 4px solid #2b59a2; border-radius: 8px; height: 150px;" />
                     <label for="description">Beskrivelse</label>
                 </div>
 
                 <div class="form-floating mb-3">
-                    <InputSelect @bind-Value="Input.Genre" class="form-control" style="border: 4px solid #2b59a2; border-radius: 8px; height: 80px;">
+                    <InputSelect @bind-Value="Input.Genre" id="genre" class="form-control" style="border: 4px solid #2b59a2; border-radius: 8px; height: 80px;">
                         <option value="" disabled>Vælg genre</option>
                         <option value="Musik">Musik</option>
                         <option value="Teater">Teater</option>
@@ -41,18 +41,18 @@
                 </div>
 
                 <div class="form-floating mb-3">
-                    <input type="datetime-local" @bind="Input.StartDate" class="form-control" style="border: 4px solid #2b59a2; border-radius: 8px; height: 80px;" />
+                    <input type="datetime-local" @bind="Input.StartDate" id="startDate" class="form-control" style="border: 4px solid #2b59a2; border-radius: 8px; height: 80px;" />
                     <label for="startDate">Start dato</label>
                 </div>
 
                 <div class="form-floating mb-3">
-                    <input type="datetime-local" @bind="Input.EndDate" class="form-control" style="border: 4px solid #2b59a2; border-radius: 8px; height: 80px;" />
+                    <input type="datetime-local" @bind="Input.EndDate" id="endDate" class="form-control" style="border: 4px solid #2b59a2; border-radius: 8px; height: 80px;" />
                     <label for="endDate">Slut dato</label>
                 </div>
                 <div class="form-floating mb-3">
                     <div class="input-group">
                         <InputText @bind-Value="Input.Location"
-                                   class="form-control"
+                                   class="form-control" id="location"
                                    style="border: 4px solid #2b59a2; border-radius: 8px; height: 80px;" />
                         <button class="btn" @onclick="OnUpdateMapClick" type="button">
                             <i class="fa-solid fa-map"></i>
@@ -60,7 +60,7 @@
                     </div>
                     <label for="location">Lokation</label>
                 </div>
-                <button type="submit" class="w-100 btn btn-lg btn-primary" style="background-color: #2b59a2;">Opret Event</button>
+                <button type="submit" id="create" class="w-100 btn btn-lg btn-primary" style="background-color: #2b59a2;">Opret Event</button>
             </div>
 
             <!-- Right side with Google Map -->
