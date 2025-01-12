@@ -7,13 +7,13 @@ namespace Skal_vi_videre.Repository
 {
     public class CompanyRepository : BaseRepository<Company>
     {
-        private PasswordHasher<string> _passwordHasher = new PasswordHasher<string>();
-        public static DBContext? DbContext { get; set; }
+        private PasswordHasher<string> passwordHasher = new PasswordHasher<string>();
+        public static DBContext? dbContext { get; set; }
 
         public override int Create(Company company)
         {
             company.Validate();
-            company.Password = _passwordHasher.HashPassword(company.Email, company.Password);
+            company.Password = passwordHasher.HashPassword(company.Email, company.Password);
 
             return base.Create(company);
         }
@@ -31,7 +31,7 @@ namespace Skal_vi_videre.Repository
             Company? company = GetAll().FirstOrDefault(u => u.Email == providedEmail);
 
             if (company == null ||
-            _passwordHasher.VerifyHashedPassword(
+            passwordHasher.VerifyHashedPassword(
                     providedEmail,
                     company.Password,
                     providedPassword)

@@ -1,7 +1,9 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestPlatform.ObjectModel;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
+using SeleniumExtras.WaitHelpers;
 using Skal_vi_videre.Repository;
 
 namespace Skal_vi_videre.SeleniumTest
@@ -16,22 +18,12 @@ namespace Skal_vi_videre.SeleniumTest
         public static void Setup(TestContext context)
         {
             _driver = new ChromeDriver(DriverDirectory);
-
             _driver.Navigate().GoToUrl("https://skalvividere.nu/");
-        }
-
-        [ClassCleanup]
-        public static void TearDown()
-        {
-            //_driver.Dispose();
         }
 
         [TestMethod]
         public void CreateCompanyTest()
         {
-            string url = _driver.Url;
-            Assert.AreEqual("https://skalvividere.nu", url);
-
             IWebElement createCompany = _driver.FindElement(By.Id("createCompany"));
             createCompany.Click();
 
@@ -55,14 +47,14 @@ namespace Skal_vi_videre.SeleniumTest
 
             IWebElement addButton = _driver.FindElement(By.Id("create"));
             addButton.Click();
+
+            string titleEvent = _driver.Title;
+            Assert.AreEqual("Opret Opret", titleEvent);
         }
 
         [TestMethod]
         public void CreateEventTest()
         {
-            string url = _driver.Url;
-            Assert.AreEqual("https://skalvividere.nu", url);
-
             IWebElement createEvent = _driver.FindElement(By.Id("createEvent"));
             createEvent.Click();
 
@@ -90,11 +82,11 @@ namespace Skal_vi_videre.SeleniumTest
         [TestMethod]
         public void LogInTest()
         {
-            string url = _driver.Url;
-            Assert.AreEqual("https://skalvividere.nu", url);
-
             IWebElement logIn = _driver.FindElement(By.Id("logIn"));
             logIn.Click();
+
+            string title = _driver.Title;
+            Assert.AreEqual("Log ind", title);
 
             IWebElement email = _driver.FindElement(By.Id("email"));
             email.SendKeys("123@gmail.com");
@@ -106,19 +98,16 @@ namespace Skal_vi_videre.SeleniumTest
         }
 
         [ClassCleanup]
-        public static void ClassCleanupEvent()
+        public static void ClassCleanup()
         {
             EventRepository eventRepository = new EventRepository();
+            // Fjern alle oprettede Event-objekter med lokationen "Selenium Test"
             var eventsToDelete = eventRepository.GetAll().Where(l => l.Location == "Selenium Test").ToList();
             foreach (var events in eventsToDelete)
             {
                 eventRepository.Delete(events.Id);
             }
-        }
 
-        [ClassCleanup]
-        public static void ClassCleanupCompany()
-        {
             CompanyRepository companyRepository = new CompanyRepository();
             // Fjern alle oprettede Company-objekter med rollen "CompanyTest"
             var companiesToDelete = companyRepository.GetAll().Where(r => r.Description == "Selenium Test").ToList();

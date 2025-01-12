@@ -8,8 +8,6 @@ namespace Skal_vi_videre.Tests
     [TestClass()]
     public class CompanyRepositoryTests
     {
-        private static CompanyRepository _companyRepository;
-
         [TestMethod()]
         public void CreateTest()
         {

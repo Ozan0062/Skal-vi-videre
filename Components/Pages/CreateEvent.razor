@@ -77,9 +77,9 @@
 
 @code
 {
-    EventRepository _eventRepository = new EventRepository();
+    EventRepository eventRepository = new EventRepository();
     Event _event = new Event();
-    CompanyRepository _companyRepository = new CompanyRepository();
+    CompanyRepository companyRepository = new CompanyRepository();
     private InputModel Input { get; set; } = new InputModel();
 
     private async Task CreateEvents()
@@ -94,10 +94,10 @@
                     StartDate = Input.StartDate,
                     EndDate = Input.EndDate,
                     Location = Input.Location,
-                    CompanyId = Skal_vi_videre.Components.Pages.LogIn.LoggedInCompany.Id
+                    CompanyId = Skal_vi_videre.Components.Pages.LogIn.loggedInCompany.Id
                 };
             events.Validate();
-            _eventRepository.Create(events);
+            eventRepository.Create(events);
             NavigationManager.NavigateTo("/Events");
         }
         catch (Exception ex)
@@ -112,7 +112,7 @@
         Input.EndDate = DateTime.Now;
 
         // Check if the user is logged in
-        if (Skal_vi_videre.Components.Pages.LogIn.LoggedInCompany == null)
+        if (Skal_vi_videre.Components.Pages.LogIn.loggedInCompany == null)
         {
             // Redirect to the login page if not logged in
             NavigationManager.NavigateTo("/Error");
