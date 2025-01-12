@@ -5,11 +5,11 @@ namespace Skal_vi_videre
 {
     public partial class Company : IHasId, IUpdateFromOther<Company>
     {
-        private readonly HttpClient _httpClient;
+        private readonly HttpClient httpClient;
 
         public Company()
         {
-            _httpClient = new HttpClient();
+            httpClient = new HttpClient();
         }
 
         public void Update(Company tOther)
@@ -46,9 +46,9 @@ namespace Skal_vi_videre
                 string url = $"https://cvrapi.dk/api?search={cvrNumber}&country=dk";
 
                 // Tilføj User-Agent header
-                _httpClient.DefaultRequestHeaders.UserAgent.ParseAdd("Afsluttende eksamensprojekt");
+                httpClient.DefaultRequestHeaders.UserAgent.ParseAdd("Afsluttende eksamensprojekt");
 
-                HttpResponseMessage response = await _httpClient.GetAsync(url);
+                HttpResponseMessage response = await httpClient.GetAsync(url);
 
                 // Tjek om svaret er succesfuldt
                 if (!response.IsSuccessStatusCode)
@@ -77,7 +77,6 @@ namespace Skal_vi_videre
                     throw new ArgumentException("Virksomhedsnavnet matcher ikke CVR-nummeret.");
                 }
 
-                //return companyData?.Name?.Equals(companyName, StringComparison.OrdinalIgnoreCase) ?? false;
                 return true; // Valideringen er succesfuld
             }
             catch (Exception ex)

@@ -18,7 +18,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-                @if (IsCompanyLoggedIn)
+                @if (isCompanyLoggedIn)
                 {
                     <!-- Logged-in View -->
                     <li class="nav-item">
@@ -98,7 +98,7 @@
 </div>
 
 @code {
-    private bool IsCompanyLoggedIn => Skal_vi_videre.Components.Pages.LogIn.LoggedInCompany != null;
+    private bool isCompanyLoggedIn => Skal_vi_videre.Components.Pages.LogIn.loggedInCompany != null;
 
     private void NavigateToLogInPage()
     {

@@ -63,17 +63,17 @@
 </div>
 
 @code {
-    private CompanyRepository _companyRepository = new CompanyRepository();
-    private Company _company = new Company();
+    private CompanyRepository companyRepository = new CompanyRepository();
+    private Company company = new Company();
     private InputModel Input { get; set; } = new();
     private string passwordInputType = "Password";
-    private Company? LoggedInCompany { get; set; }
+    private Company? loggedInCompany { get; set; }
     private string? Message;
 
     private async Task RegisterCompany()
     {
         Console.WriteLine("RegisterCompany kaldt");
-        bool isValid = await _company.ValidateCompanyAsync(Input.Cvr, Input.Name);
+        bool isValid = await company.ValidateCompanyAsync(Input.Cvr, Input.Name);
 
         if (isValid)
         {
@@ -90,7 +90,7 @@
                     Description = Input.Description,
                     Role = "Company"
                 };
-            _companyRepository.Create(company);
+            companyRepository.Create(company);
             NavigationManager.NavigateTo("/");
         }
         else

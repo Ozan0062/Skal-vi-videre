@@ -5,7 +5,7 @@ namespace Skal_vi_videre.Repository
 {
     public class EventRepository : BaseRepository<Event>
     {
-        public static DBContext? DbContext { get; set; }
+        public static DBContext? dbContext { get; set; }
 
         protected override IQueryable<Event> GetAllWithIncludes(DbContext context)
         {

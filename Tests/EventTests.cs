@@ -7,8 +7,6 @@ namespace Skal_vi_videre.Tests
     [TestClass()]
     public class EventTests
     {
-        private static EventRepository _eventRepository;
-
         [TestMethod()]
         public void CreateTest()
         {

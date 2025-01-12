@@ -69,18 +69,18 @@
 </div>
 
 @code {
-    private CompanyRepository _companyRepository = new CompanyRepository();
+    private CompanyRepository companyRepository = new CompanyRepository();
     private InputModel Input { get; set; } = new InputModel();
     private string? errorMessage;
     private string passwordInputType = "Password";
-    public static Company? LoggedInCompany { get; set; }
-    private string? ReturnUrl { get; set; }
+    public static Company? loggedInCompany { get; set; }
+    private string? returnUrl { get; set; }
 
     private async Task LoginCompany()
     {
-        LoggedInCompany = _companyRepository.VerifyCompany(Input.Email, Input.Password);
+        loggedInCompany = companyRepository.VerifyCompany(Input.Email, Input.Password);
 
-        if (LoggedInCompany == null)
+        if (loggedInCompany == null)
         {
             errorMessage = "Error: Invalid login attempt.";
             return;
@@ -97,7 +97,7 @@
 
         httpContext?.SignInAsync(
         CookieAuthenticationDefaults.AuthenticationScheme,
-        BuildClaimsPrincipal(LoggedInCompany), authProperties);
+        BuildClaimsPrincipal(loggedInCompany), authProperties);
 
         NavigationManager.NavigateTo("/CreateEvent");
     }
