@@ -1,6 +1,9 @@
 name: Test, build, publish and deploy project to Simply
 
-on: [push]
+on:
+  push:
+    branches:
+    - master
 
 jobs:
   Test:
