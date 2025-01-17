@@ -11,31 +11,39 @@
         <!-- Left Column: Form -->
         <div class="col-lg-6 d-flex justify-content-center align-items-center">
             <div class="col-md-10">
-                <StatusMessage Message="@Message" />
+                @if (!string.IsNullOrEmpty(Message))
+                {
+                    <div class="alert alert-danger">
+                        @Message
+                    </div>
+                }
                 <EditForm Model="Input" OnValidSubmit="RegisterCompany">
                     <DataAnnotationsValidator />
                     <hr />
-                    <ValidationSummary class="text-danger" />
                     <div class="form-floating mb-3">
                         <InputText @bind-Value="Input.Cvr" id="cvr" class="form-control" style="border: 4px solid #2b59a2; border-radius: 8px;" />
                         <label for="cvr">CVR Nummer</label>
+                        <ValidationMessage For="() => Input.Cvr" />
                     </div>
                     <div class="form-floating mb-3">
                         <InputText @bind-Value="Input.Name" id="name" class="form-control" style="border: 4px solid #2b59a2; border-radius: 8px;" />
                         <label for="name">Navn</label>
+                        <ValidationMessage For="() => Input.Name" />
                     </div>
                     <div class="form-floating mb-3">
                         <InputText @bind-Value="Input.Address" id="address" class="form-control" style="border: 4px solid #2b59a2; border-radius: 8px;" />
                         <label for="address">Adresse</label>
+                        <ValidationMessage For="() => Input.Address" />
                     </div>
                     <div class="form-floating mb-3">
-                        <InputText @bind-Value="Input.Email" id="email" class="form-control" placeholder="name@example.com" style="border: 4px solid #2b59a2; border-radius: 8px;" />
+                        <InputText @bind-Value="Input.Email" id="email" class="form-control" style="border: 4px solid #2b59a2; border-radius: 8px;" />
                         <label for="email">Email</label>
                         <ValidationMessage For="() => Input.Email" />
                     </div>
                     <div class="form-floating mb-3 position-relative">
                         <InputText @bind-Value="Input.Password" id="password" class="form-control" style="border: 4px solid #2b59a2; border-radius: 8px;" type="@passwordInputType" autocomplete="current-password" aria-required="true" placeholder="password" />
                         <label for="password" class="form-label">Adgangskode</label>
+                        <ValidationMessage For="() => Input.Password" />
 
                         <!-- Vis/skjul adgangskode ikon -->
                         <span @onclick="TogglePasswordVisibility" class="position-absolute end-0 me-3" style="top: 50%; transform: translateY(-50%); cursor: pointer;">
@@ -45,10 +53,12 @@
                     <div class="form-floating mb-3">
                         <InputText @bind-Value="Input.PhoneNumber" id="phoneNumber" class="form-control" style="border: 4px solid #2b59a2; border-radius: 8px;" />
                         <label for="phoneNumber">Telefon Nummer</label>
+                        <ValidationMessage For="() => Input.PhoneNumber" />
                     </div>
                     <div class="form-floating mb-3">
                         <InputText @bind-Value="Input.Description" id="description" class="form-control" style="border: 4px solid #2b59a2; border-radius: 8px;" />
                         <label for="description">Beskrivelse</label>
+                        <ValidationMessage For="() => Input.Description" />
                     </div>
                     <button type="submit" id="create" class="w-100 btn btn-lg btn-primary" style="background-color: #2b59a2;">Opret virksomhed</button>
                 </EditForm>
@@ -78,6 +88,23 @@
         if (isValid)
         {
             Console.WriteLine("Virksomheden er valideret og kan oprettes.");
+
+            if (companyRepository.DoesCvrExist(Input.Cvr))
+            {
+                Message = "CVR-nummeret findes allerede.";
+                return;
+            }
+            else if (companyRepository.DoesEmailExist(Input.Email))
+            {
+                Message = "E-mailadressen findes allerede.";
+                return;
+            }
+            else if (companyRepository.DoesPhoneNumberExist(Input.PhoneNumber))
+            {
+                Message = "Telefonnummeret findes allerede.";
+                return;
+            }
+
             // Logik til at gemme virksomheden
             Company company = new Company
                 {
@@ -90,12 +117,21 @@
                     Description = Input.Description,
                     Role = "Company"
                 };
+        try
+        {
+            // Forsøg at gemme virksomheden
             companyRepository.Create(company);
-            NavigationManager.NavigateTo("/");
+            NavigationManager.NavigateTo("/"); // Naviger efter oprettelsen
         }
+        catch (Exception ex)
+        {
+            // Hvis der opstår en fejl, vis fejlbesked
+            Message = "Oprettelsen af virksomheden mislykkedes";
+        }
+    }
         else
         {
-            Console.WriteLine("Validering fejlede. CVR-nummeret og virksomhedsnavnet matcher ikke.");
+            Message = "Validering fejlede. CVR-nummeret og virksomhedsnavnet matcher ikke.";
         }
     }
 
@@ -106,34 +142,35 @@
 
     private class InputModel
     {
-        [Required]
+        [Required(ErrorMessage = "CVR-nummer er påkrævet.")]
         [Display(Name = "CVR-nummer")]
         public string Cvr { get; set; } = string.Empty;
 
-        [Required]
+        [Required(ErrorMessage = "Navn er påkrævet.")]
         [Display(Name = "Navn")]
         public string Name { get; set; } = string.Empty;
 
-        [Required]
+        [Required(ErrorMessage = "Adresse er påkrævet.")]
         [Display(Name = "Adresse")]
         public string Address { get; set; } = string.Empty;
 
-        [Required]
-        [EmailAddress]
+        [Required(ErrorMessage = "E-mail er påkrævet.")]
+        [EmailAddress(ErrorMessage = "Indtast venligst en gyldig e-mailadresse.")]
         public string Email { get; set; } = string.Empty;
 
-        [Required]
+        [Required(ErrorMessage = "Adgangskode er påkrævet.")]
         [DataType(DataType.Password)]
         [Display(Name = "Adgangskode")]
         public string Password { get; set; } = string.Empty;
 
-        [Required]
+        [Required(ErrorMessage = "Telefonnummer er påkrævet.")]
         [DataType(DataType.PhoneNumber)]
         [Display(Name = "Telefonnummer")]
         public string PhoneNumber { get; set; } = string.Empty;
 
-        [Required]
+        [Required(ErrorMessage = "Beskrivelse er påkrævet.")]
         [Display(Name = "Beskrivelse")]
         public string Description { get; set; } = string.Empty;
     }
+
 }

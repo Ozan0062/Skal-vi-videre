@@ -17,6 +17,7 @@ public partial class Event
     [StringLength(1000)]
     public string Title { get; set; }
 
+    [Required]
     [StringLength(1000)]
     public string Description { get; set; }
 
@@ -28,13 +29,13 @@ public partial class Event
     public DateTime StartDate { get; set; }
 
     [Column(TypeName = "datetime")]
-    public DateTime? EndDate { get; set; }
+    public DateTime EndDate { get; set; }
 
     [Required]
     [StringLength(1000)]
     public string Location { get; set; }
 
-    public int? CompanyId { get; set; }
+    public int CompanyId { get; set; }
 
     [ForeignKey("CompanyId")]
     [InverseProperty("Events")]

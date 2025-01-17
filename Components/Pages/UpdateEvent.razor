@@ -1,14 +1,14 @@
-﻿@page "/CreateEvent"
+﻿@page "/UpdateEvents/{eventId:int}"
 
 @using Skal_vi_videre.Repository
 @using System.ComponentModel.DataAnnotations
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JSRuntime
 
-<PageTitle>Opret Event</PageTitle>
+<PageTitle>Opdater Event</PageTitle>
 
 <div class="row">
-    <EditForm Model="Input" OnValidSubmit="CreateEvents">
+    <EditForm Model="Input" OnValidSubmit="UpdateEvents">
         <DataAnnotationsValidator />
         <hr />
         @if (!string.IsNullOrEmpty(Message))
@@ -62,8 +62,8 @@
                 <div class="form-floating mb-3">
                     <div class="input-group">
                         <InputText @bind-Value="Input.Location"
-                                   class="form-control" id="location"
-                                   style="border: 4px solid #2b59a2; border-radius: 8px; height: 80px;" />
+                        class="form-control" id="location"
+                        style="border: 4px solid #2b59a2; border-radius: 8px; height: 80px;" />
                         <button class="btn" @onclick="OnUpdateMapClick" type="button">
                             <i class="fa-solid fa-map"></i>
                         </button>
@@ -71,7 +71,7 @@
                     <label for="location">Lokation</label>
                     <ValidationMessage For="() => Input.Location" />
                 </div>
-                <button type="submit" id="create" class="w-100 btn btn-lg btn-primary" style="background-color: #2b59a2;">Opret Event</button>
+                <button type="submit" id="create" class="w-100 btn btn-lg btn-primary" style="background-color: #2b59a2;">Opdater Event</button>
             </div>
 
             <!-- Right side with Google Map -->
@@ -86,50 +86,55 @@
 </div>
 
 
-@code
-{
+@code {
+    [Parameter] public int eventId { get; set; }
     EventRepository eventRepository = new EventRepository();
-    Event _event = new Event();
-    CompanyRepository companyRepository = new CompanyRepository();
     private InputModel Input { get; set; } = new InputModel();
-    private string? Message;
+    Event events = new Event();
+    private string Message;
 
-    private async Task CreateEvents()
+    protected override async Task OnInitializedAsync()
+    {
+        var existingEvent = eventRepository.Get(eventId);
+        if (existingEvent == null)
+        {
+            NavigationManager.NavigateTo("/Error");
+            return;
+        }
+
+        Input = new InputModel
+            {
+                Title = existingEvent.Title,
+                Description = existingEvent.Description,
+                Genre = existingEvent.Genre,
+                StartDate = existingEvent.StartDate,
+                EndDate = existingEvent.EndDate,
+                Location = existingEvent.Location
+            };
+    }
+
+    private async Task UpdateEvents()
     {
         try
         {
-            Event events = new Event
+            var eventToUpdate = new Event
                 {
+                    Id = eventId,
                     Title = Input.Title,
                     Description = Input.Description,
                     Genre = Input.Genre,
                     StartDate = Input.StartDate,
                     EndDate = Input.EndDate,
-                    Location = Input.Location,
-                    CompanyId = Skal_vi_videre.Components.Pages.LogIn.loggedInCompany.Id
+                    Location = Input.Location
                 };
-            events.Validate();
-            eventRepository.Create(events);
+            eventToUpdate.Validate();
+            eventRepository.Update(eventId, eventToUpdate);
             NavigationManager.NavigateTo("/Events");
         }
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
-            Message = "Oprettelsen af event mislykkedes";
-        }
-    }
-
-    protected override async Task OnInitializedAsync()
-    {
-        Input.StartDate = DateTime.Now;
-        Input.EndDate = DateTime.Now;
-
-        // Check if the user is logged in
-        if (Skal_vi_videre.Components.Pages.LogIn.loggedInCompany == null)
-        {
-            // Redirect to the login page if not logged in
-            NavigationManager.NavigateTo("/Error");
-            return;
+            Message = "Opdatering af event mislykkedes";
         }
     }
 
@@ -202,7 +207,6 @@
             }
         }
     }
-
 
     [Parameter] public double Latitude { get; set; } = 55.630846563348534;  // Standardværdi
     [Parameter] public double Longitude { get; set; } = 12.078656210578572;  // Standardværdi

@@ -1,0 +1,34 @@
+﻿/* Footer Styles */
+.footer {
+    background-color: white;
+    padding: 10px 0; /* Top and bottom padding */
+    margin-top: 50px; /* Space between content and footer */
+}
+
+/* Partner Logos */
+.partner-logo {
+    width: 100%; /* Make the logo responsive */
+    height: auto; /* Maintain aspect ratio */
+    max-width: 150px; /* Set max width to avoid oversized logos */
+    margin: 0 auto; /* Center logos within the column */
+}
+
+/* Optional: Add space between logos */
+.footer .col-md-2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+
+.input-group {
+    position: relative;
+}
+
+    .input-group .btn {
+        position: absolute;
+        top: 50%;
+        right: 10px; /* Placer knappen 10px fra højre kant */
+        transform: translateY(-50%); /* Centrer knappen vertikalt */
+        z-index: 10; /* Sørg for, at knappen er ovenpå inputfeltet */
+    }

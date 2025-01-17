@@ -177,6 +177,8 @@ else
     {
         eventRepository.Delete(events.Id);
         Event = eventRepository.GetAll();
+        var companyEmail = Skal_vi_videre.Components.Pages.LogIn.loggedInCompany.Email;
+        Event = Event.Where(t => t.Company != null && t.Company.Email == companyEmail).ToList();
     }
 
     private void NavigateToUpdate(int id)
