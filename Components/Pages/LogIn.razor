@@ -21,7 +21,6 @@
             }
             <EditForm Model="Input" OnValidSubmit="LoginCompany">
                 <DataAnnotationsValidator />
-                <ValidationSummary class="text-danger" role="alert" />
                 <hr />
 
                 <div class="form-floating mb-3">
@@ -82,7 +81,7 @@
 
         if (loggedInCompany == null)
         {
-            errorMessage = "Error: Invalid login attempt.";
+            errorMessage = "Forkert e-mail eller adgangskode";
             return;
         }
 
@@ -120,16 +119,16 @@
 
     private sealed class InputModel
     {
-        [Required]
-        [EmailAddress]
+        [Required(ErrorMessage = "E-mail er påkrævet.")]
+        [EmailAddress(ErrorMessage = "Indtast venligst en gyldig e-mailadresse.")]
         public string Email { get; set; } = "";
 
-        [Required]
+        [Required(ErrorMessage = "Adgangskode er påkrævet.")]
         [DataType(DataType.Password)]
         [Display(Name = "Adgangskode")]
         public string Password { get; set; } = "";
 
-        [Display(Name = "Remember me?")]
+        [Display(Name = "Husk mig?")]
         public bool RememberMe { get; set; }
     }
 }
