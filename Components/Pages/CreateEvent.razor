@@ -264,6 +264,7 @@
     {
         if (firstRender)
         {
+            await JSRuntime.InvokeVoidAsync("initializeAutocomplete", "location", DotNetObjectReference.Create(this));
             await LoadMap();
         }
     }

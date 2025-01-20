@@ -59,3 +59,22 @@ function getUserLocation() {
         }
     });
 }
+
+function initializeAutocomplete(inputId, dotNetHelper) {
+    var input = document.getElementById(inputId);
+    var autocomplete = new google.maps.places.Autocomplete(input,
+        {
+            componentRestrictions: { 'country': 'dk' }
+        });
+
+    autocomplete.addListener("place_changed", function () {
+        var place = autocomplete.getPlace();
+        if (place.geometry) {
+            var location = {
+                lat: place.geometry.location.lat(),
+                lng: place.geometry.location.lng()
+            };
+            dotNetHelper.invokeMethodAsync("UpdateMapLocation", place.formatted_address, location.lat, location.lng);
+        }
+    });
+}
